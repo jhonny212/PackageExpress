@@ -42,8 +42,10 @@ public class Admin extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(54, 42, 42));
@@ -123,6 +125,11 @@ public class Admin extends javax.swing.JFrame {
         });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 100, 50));
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu Mono", 1, 36)); // NOI18N
+        jLabel6.setForeground(java.awt.Color.white);
+        jLabel6.setText("¿Que desea hacer?");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 580));
 
         pack();
@@ -169,7 +176,7 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
         Welcome a=new Welcome();
         a.setVisible(true);
-        this.setVisible(false);
+        dispose();
       
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -220,6 +227,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JDesktopPane ventana;
     // End of variables declaration//GEN-END:variables

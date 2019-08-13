@@ -5,6 +5,8 @@
  */
 package Administrador;
 
+import Inicio.crearPC;
+
 /**
  *
  * @author jhonny
@@ -33,11 +35,11 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -47,6 +49,9 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         jLabel6 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jButton5 = new javax.swing.JButton();
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        jLabel2.setText("Ruta");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -65,15 +70,11 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 60, 60));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 60, 60));
 
         jLabel1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
-        jLabel1.setText("Descativar ");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, -1));
-
-        jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
-        jLabel2.setText("Ruta");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+        jLabel1.setText("Eliminar");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 80, -1));
 
         jButton2.setBackground(new java.awt.Color(249, 182, 63));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Add.png"))); // NOI18N
@@ -123,6 +124,11 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
 
         jButton5.setBackground(new java.awt.Color(42, 73, 136));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Back.png"))); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 60, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 490));
@@ -131,20 +137,36 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        cambiarTamaño a=new cambiarTamaño();
+        jDesktopPane1.add(a);
+        a.show();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        EliminarPc a=new EliminarPc();
+        jDesktopPane1.add(a);
+        a.show();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        crearPC open=new crearPC ();
+        jDesktopPane1.add(open);
+        open.show();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+      EliminarRuta a=new EliminarRuta();
+      jDesktopPane1.add(a);
+      a.show();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        Admin a=new Admin();
+        a.show();
+        dispose();
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

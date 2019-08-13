@@ -5,6 +5,14 @@
  */
 package Inicio;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import static Inicio.IniciarConeccion.connection;
+
 /**
  *
  * @author jhonny
@@ -30,11 +38,11 @@ public class EliminateUser extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        user = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        contra = new javax.swing.JPasswordField();
 
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -45,12 +53,11 @@ public class EliminateUser extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Ubuntu Mono", 1, 24)); // NOI18N
         jLabel1.setText("Usuario");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 100, -1));
+        jPanel1.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 100, -1));
 
         jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 24)); // NOI18N
         jLabel2.setText("Contraseña");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, -1));
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 100, -1));
 
         jButton1.setText("Eliminar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -74,6 +81,7 @@ public class EliminateUser extends javax.swing.JInternalFrame {
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 350, 20));
+        jPanel1.add(contra, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 100, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 390, 270));
 
@@ -82,16 +90,49 @@ public class EliminateUser extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        boolean tmp=true;
+        if(validar()){
+            try {
+                
+                PreparedStatement declaracion =connection.prepareStatement("DELETE FROM usuario WHERE username=? && contraseña=?");
+                declaracion.setString(1, user.getText());
+               declaracion.setString(2, contra.getText());
+                 int  rs=declaracion.executeUpdate();
+                if(rs>0){
+                JOptionPane.showMessageDialog(this, "Eliminado");
+               tmp=false;
+                }
+                connection.close();
+            } catch (SQLException ex) {
+                
+            }
+                
+        
+        }else{
+        JOptionPane.showMessageDialog(this, "Llene los datos");
+        }
+        
+        if(tmp){
+        JOptionPane.showMessageDialog(this, "Los datos no son correctos");
+        }
+        
+             user.setText(null);
+                contra.setText(null);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+public boolean validar(){
+    if(user.getText().equals("") || contra.getText().equals(""))
+    return false;
+    else 
+        return true;
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField contra;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 }

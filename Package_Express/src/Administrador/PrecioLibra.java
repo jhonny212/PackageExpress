@@ -5,6 +5,12 @@
  */
 package Administrador;
 
+import Inicio.IniciarConeccion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import static Inicio.IniciarConeccion.connection;
 /**
  *
  * @author jhonny
@@ -27,21 +33,92 @@ public class PrecioLibra extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        precio = new javax.swing.JTextField();
+
+        setClosable(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(1, 1, 1));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu Mono", 1, 36)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Fijar precio");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, -1, -1));
+
+        jButton1.setFont(new java.awt.Font("Ubuntu Mono", 1, 20)); // NOI18N
+        jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 90, -1));
+
+        precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioKeyTyped(evt);
+            }
+        });
+        jPanel1.add(precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, 90, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, 0, 400, 280));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioKeyTyped
+
+                    char validar=evt.getKeyChar();
+          if(Character.isLetter(validar) ){   
+        getToolkit().beep();
+        evt.consume();
+        }
+        
+        
+    }//GEN-LAST:event_precioKeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       
+           boolean validar=true;
+        if(validar()){
+            try {
+                PreparedStatement declaracion=null;
+                
+                declaracion=connection.prepareStatement("UPDATE datos SET precioLibra=?");
+                declaracion.setInt(1, Integer.parseInt(precio.getText()));
+                 int  rs=declaracion.executeUpdate();
+            if(rs>0){
+                JOptionPane.showMessageDialog(this, "Dato actualizado correctamente");
+              validar=false;
+                }
+            } catch (SQLException ex) {
+            
+            }
+            
+        
+        }else{
+        JOptionPane.showMessageDialog(this,"Llene los datos");
+        }
+        if(validar){
+          JOptionPane.showMessageDialog(this, "Llene el dato");
+              
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+ public boolean validar(){
+    if(precio.getText().equals(""))
+        return false;
+    else return true;
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField precio;
     // End of variables declaration//GEN-END:variables
 }

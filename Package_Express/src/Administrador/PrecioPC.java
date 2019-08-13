@@ -5,6 +5,16 @@
  */
 package Administrador;
 
+import Inicio.IniciarConeccion;
+import static Inicio.IniciarConeccion.connection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jhonny
@@ -16,7 +26,29 @@ public class PrecioPC extends javax.swing.JInternalFrame {
      */
     public PrecioPC() {
         initComponents();
+        Listar();
+       
     }
+public void Listar(){
+    combo.addItem("Todos");
+    IniciarConeccion a=new IniciarConeccion();
+    Connection connection=null;
+    connection=a.getConnection();
+        try {
+         PreparedStatement declaracion =connection.prepareStatement("SELECT controlPoint.id_pc FROM controlPoint " );
+         ResultSet re=declaracion.executeQuery();
+         while(re.next()){
+         combo.addItem(re.getString("id_pc"));
+         }
+         
+         
+        } catch (SQLException ex) {
+        
+        }
+                
+}    
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,21 +59,192 @@ public class PrecioPC extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        combo = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        precio = new javax.swing.JTextField();
+
+        setClosable(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(181, 165, 149));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(236, 190, 144));
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Acá se puede modificar el precio de un");
+
+        jLabel2.setBackground(java.awt.Color.white);
+        jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.white);
+        jLabel2.setText("punto de control");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(136, 136, 136)
+                        .addComponent(jLabel2)))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 420, 70));
+
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
+        jPanel1.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 120, -1));
+
+        jButton1.setText("Modificar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, 90, -1));
+
+        precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioKeyTyped(evt);
+            }
+        });
+        jPanel1.add(precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 90, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 1, 420, 280));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboActionPerformed
+  public String obtenerLetra(String letra){
+       String tmp=combo.getSelectedItem().toString();
+     String [] vect=tmp.split("");
+     String numbers="1234567890";
+     String [] vect2=numbers.split("");
+     
+     for(int i=0; i<tmp.length();i++){
+       
+     for(int j=0;j<numbers.length();j++){
+         
+     if(vect[i].equals(vect2[j]))
+     {
+        letra+=vect[i]; 
+     
+     break;
+     }
+     }
+     }
+    
+        
+        
+        
+    return letra;}
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+         
+           boolean validar=true;
+            String tmp="";
+            tmp=obtenerLetra(tmp);
+        if(validar()){
+           if(!tmp.equals("Todos")){
+            try {
+                PreparedStatement declaracion=null;
+                declaracion=connection.prepareStatement("UPDATE controlPoint SET precioPc=? WHERE id_pc=?");
+                declaracion.setInt(1, Integer.parseInt(precio.getText()));
+                declaracion.setString(2, tmp);
+                 int  rs=declaracion.executeUpdate();
+            if(rs>0){
+                JOptionPane.showMessageDialog(this, "Dato actualizado correctamente");
+              validar=false;
+                }
+            } catch (SQLException ex) {
+            
+            }
+            }
+          String var=combo.getSelectedItem().toString();
+           if(var.equals("Todos")){
+               
+               try {
+                   PreparedStatement declaracion=null;
+                  
+                   declaracion=connection.prepareStatement("UPDATE controlPoint SET precioPc=?");
+                   declaracion.setInt(1, Integer.parseInt(precio.getText()));
+                   int  rs=declaracion.executeUpdate();
+            if(rs>0){
+                JOptionPane.showMessageDialog(this, "Dato actualizado correctamente");
+              validar=false;
+                }
+               } catch (SQLException ex) {
+               
+               }
+           }
+        }else{
+        JOptionPane.showMessageDialog(this,"Llene los datos");
+        }
+        if(validar){
+          JOptionPane.showMessageDialog(this, "Llene el dato");
+              
+        }
+        
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
+    public boolean validar(){
+    if(precio.getText().equals(""))
+        return false;
+    else return true;
+    }
+    private void precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioKeyTyped
+        char validar=evt.getKeyChar();
+          if(Character.isLetter(validar) ){   
+        getToolkit().beep();
+        evt.consume();
+        }
+       
+        
+        
+    }//GEN-LAST:event_precioKeyTyped
+
+
+    
+        
+        
+        
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> combo;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField precio;
     // End of variables declaration//GEN-END:variables
 }

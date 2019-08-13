@@ -4,10 +4,15 @@
  * and open the template in the editor.
  */
 package Recepcionista;
+import static Inicio.IniciarConeccion.connection;
 import Inicio.Welcome;
-import Object_Classes.Cliente;
+
 import java.awt.Image;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 /**
@@ -227,21 +232,44 @@ public class Recepcionist extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        String tmp1="";
-        int tmp2=0;
-        int tmp3=0;
-        Image icon=null;
+        int cui=0;
+        while(Integer.toString(cui).length()!=9){
+        cui=Integer.parseInt(JOptionPane.showInputDialog("Ingrese un cui correcto"));
+        }
+       String nombre=JOptionPane.showInputDialog("Ingrese nombre del cliente");
        
-        JOptionPane a=null;
-        JOptionPane.showInputDialog(this,  "Nombre",tmp1);
-        JOptionPane.showInputDialog(this, "CUI",tmp2);
-        JOptionPane.showInputDialog(this, "Nit",tmp3);
-        
-       
+       int nit=Integer.parseInt(JOptionPane.showInputDialog("Ingrese un nit correcto"));
+ 
+      String direccion=JOptionPane.showInputDialog("Ingrese direccion del cliente");
       
+    CrearCliente(cui, nombre, nit, direccion);
+       
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    public void CrearCliente(int cui, String name, int nit, String direccion){
+    
+        boolean validar=true;
+        try {
+            PreparedStatement declaracion =connection.prepareStatement("INSERT INTO cliente(cui, nombre, nit , direccion) VALUES (?, ?, ?, ?)");
+            declaracion.setInt(1, cui);
+            declaracion.setString(2, name);
+            declaracion.setInt(3, nit);
+            declaracion.setString(4, direccion);
+             int  rs=declaracion.executeUpdate();
+                if(rs>0){
+                JOptionPane.showMessageDialog(this, "Cliente agregado");
+                validar=false;
+                }
+        } catch (SQLException ex) {
+        
+        }
+               
+       if(validar){
+                JOptionPane.showMessageDialog(this, "Error al agregar cliente");
+                } 
+    
+    }
     private void cuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cuiKeyTyped
         // TODO add your handling code here:
         char validar=evt.getKeyChar();

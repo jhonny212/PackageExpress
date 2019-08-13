@@ -9,6 +9,15 @@ import javax.swing.JOptionPane;
 import Recepcionista.Recepcionist;
 import Operator.operator;
 import Administrador.Admin;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static Inicio.IniciarConeccion.connection;
 /**
  *
  * @author jhonny-G
@@ -21,12 +30,11 @@ public class Welcome extends javax.swing.JFrame {
     public Welcome() {
         initComponents();
         this.setLocationRelativeTo(this);
-        inciarConeccion();
+        IniciarConeccion a=new IniciarConeccion();
+        a.IniciarConeccion();
     }
 
-    public void inciarConeccion(){
-    
-    }
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,13 +48,14 @@ public class Welcome extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         Usuario = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        contra = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         Welcome.setBackground(new java.awt.Color(87, 75, 182));
@@ -113,7 +122,7 @@ public class Welcome extends javax.swing.JFrame {
         Welcome.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Welcome.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Welcome.setLayer(Usuario, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        Welcome.setLayer(jPasswordField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        Welcome.setLayer(contra, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Welcome.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Welcome.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         Welcome.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -129,43 +138,42 @@ public class Welcome extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(WelcomeLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, WelcomeLayout.createSequentialGroup()
-                                .addGap(0, 3, Short.MAX_VALUE)
-                                .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1)
-                                    .addGroup(WelcomeLayout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(61, 61, 61)
-                                        .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, WelcomeLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(26, 26, 26)
-                                .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap(212, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addGroup(WelcomeLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(171, 171, 171)))
+                        .addContainerGap(214, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, WelcomeLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton3)
                             .addComponent(jButton2))
-                        .addGap(29, 29, 29))))
+                        .addGap(29, 29, 29))
+                    .addGroup(WelcomeLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(26, 26, 26)
+                        .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(contra, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                            .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(204, Short.MAX_VALUE))))
         );
         WelcomeLayout.setVerticalGroup(
             WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(WelcomeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(53, 53, 53)
-                .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(51, 51, 51)
+                .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(Usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(50, 50, 50)
                 .addGroup(WelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(contra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
                 .addComponent(jButton1)
                 .addGap(59, 59, 59)
@@ -196,7 +204,7 @@ public class Welcome extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        CreateUser a=new CreateUser();
+       CreateUser a=new CreateUser();
        Welcome.add(a);
        a.show();
         
@@ -209,28 +217,27 @@ public class Welcome extends javax.swing.JFrame {
     }//GEN-LAST:event_UsuarioKeyTyped
 
     public String tmp="";
-    public boolean validar=true;
+  
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         tmp="";
         
-        tmp="Recepcionista";
-        validar=true;
+        
         validar();
         if(tmp.equals("Recepcionista")){
         Recepcionist open =new Recepcionist();
         open.setVisible(true);
-       
+        dispose();
         }else if(tmp.equals("Administrador")){
         Admin a =new Admin();
         a.setVisible(true);
-        
+       dispose();
         }else if(tmp.equals("Operador")){
         operator a = new operator();
         a.setVisible(true);
-       
+       dispose();
             
-        }else if(validar){
+        }else {
         JOptionPane.showMessageDialog(this,"Los datos no coinciden");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -243,6 +250,25 @@ public class Welcome extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 public void validar(){
+  
+        try {
+   
+    PreparedStatement declaracion =connection.prepareStatement("SELECT usuario.tipoUser FROM usuario WHERE username=? && contraseña=?");
+    declaracion.setString(1,Usuario.getText());
+    declaracion.setString(2,contra.getText());
+        
+    ResultSet res=declaracion.executeQuery();
+    
+    while(res.next()){
+    this.tmp=res.getString("tipoUser");
+    }
+    
+        } catch (SQLException ex) {
+             JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+                
+  
+    
     
 }
     /**
@@ -283,6 +309,7 @@ public void validar(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Usuario;
     private javax.swing.JDesktopPane Welcome;
+    private javax.swing.JPasswordField contra;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -290,6 +317,5 @@ public void validar(){
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
     // End of variables declaration//GEN-END:variables
 }

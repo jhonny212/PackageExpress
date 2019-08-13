@@ -5,6 +5,14 @@
  */
 package Recepcionista;
 
+import static Inicio.IniciarConeccion.connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jhonny
@@ -17,7 +25,7 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
     public Lookforpackage() {
         initComponents();
         this.setLocation(50, 50);
-        jLabel2.setText("Waiting...");
+        text.setText("Waiting...");
     }
 
     /**
@@ -32,8 +40,8 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        codigo = new javax.swing.JTextField();
+        text = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 42, 31));
@@ -52,35 +60,68 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
 
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 380, 60));
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 130, -1));
 
-        jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 240, 90));
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                codigoKeyTyped(evt);
+            }
+        });
+        jPanel2.add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 130, -1));
 
+        text.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        text.setText("WAITING...");
+        jPanel2.add(text, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 240, 50));
+
+        jButton1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton1.setText("Verificar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 80, -1));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 110, 40));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 340));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 310));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+   boolean validar=true;
+        try {
+            PreparedStatement declaracion =connection.prepareStatement("SELECT paquete.id_pc FROM paquete WHERE id_pc=?");
+            declaracion.setInt(1, Integer.parseInt(codigo.getText()));
+            
+            ResultSet res=declaracion.executeQuery();
+            while(res.next()){
+            text.setText("EL PAQUETE SE ENCUENTRA EN EL PUNTO DE CONTROL ID"+res.getString("id_pc"));
+            validar=false;
+            }
+        } catch (SQLException ex) {
+        
+        }
+    if(validar){
+        JOptionPane.showMessageDialog(this, "Codigo de paquete no valido");
+    }
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyTyped
+                char validar=evt.getKeyChar();
+          if(Character.isDigit(validar)  ){   
+        getToolkit().beep();
+        evt.consume();
+        }
+
+    }//GEN-LAST:event_codigoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField codigo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel text;
     // End of variables declaration//GEN-END:variables
 }
