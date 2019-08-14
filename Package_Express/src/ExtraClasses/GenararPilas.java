@@ -70,6 +70,7 @@ public class GenararPilas {
              id=res.getInt("id_pc");
            
            Cola [] cola=new Cola[res.getInt("tamaño")];
+
            //cola[1]=new Cola(null);//res.getInt("id_pc"),res.getInt("precioPc"),res.getInt("direccion_rta"),res.getString("estadoPc"),res.getInt("tamaño"));
            
            COLA.add(cola);
@@ -103,6 +104,13 @@ public class GenararPilas {
         }
     
     }
+     LinkedList<Cola[]> c=COLARUTA.get(a).getA();
+       for(int i=0;i<c.size();i++){
+           Cola ass[]=c.get(i);
+           
+       System.out.println(ass.getClass());
+       }
+    
       
    
     }

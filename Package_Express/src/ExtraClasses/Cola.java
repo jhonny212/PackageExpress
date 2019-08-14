@@ -16,6 +16,8 @@ public class Cola {
     private String estado;
     private int tamaño;
     private Paquete paquete;
+  
+    
     public Cola(Paquete paquete){
    this.paquete=paquete;
     }
