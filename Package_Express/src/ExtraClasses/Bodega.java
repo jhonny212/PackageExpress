@@ -1,14 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ExtraClasses;
 
-/**
- *
- * @author jhonny
- */
+
 public class Bodega {
+  private Paquete paquete;
+
+    public Paquete getPaquete() {
+        return paquete;
+    }
+
+    public void setPaquete(Paquete paquete) {
+        this.paquete = paquete;
+    }
+    public Bodega(Paquete paquete){
+    this.paquete=paquete;
+    }
     
 }

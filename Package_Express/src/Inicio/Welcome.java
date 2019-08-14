@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static Inicio.IniciarConeccion.connection;
+import ExtraClasses.GenararPilas;
 /**
  *
  * @author jhonny-G
@@ -32,6 +33,9 @@ public class Welcome extends javax.swing.JFrame {
         this.setLocationRelativeTo(this);
         IniciarConeccion a=new IniciarConeccion();
         a.IniciarConeccion();
+        
+        GenararPilas b=new GenararPilas();
+        b.GeneratePilas();
     }
 
  

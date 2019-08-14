@@ -96,7 +96,7 @@ public class Packages extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Recepcionist a=new Recepcionist();
-        jDesktopPane1.add(a);
+        
         a.show();
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed

@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 package Recepcionista;
+import ExtraClasses.Paquete;
 import static Inicio.IniciarConeccion.connection;
 import Inicio.Welcome;
-
 import java.awt.Image;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -21,15 +22,29 @@ import javax.swing.JOptionPane;
  */
 public class Recepcionist extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Recepcionist
-     */
+   public boolean validar=true;
     public Recepcionist() {
         initComponents();
         this.setLocationRelativeTo(this);
+        llenarCombo();
      
     }
-
+    public void llenarCombo(){
+    combo.removeAllItems();
+        try {
+         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta FROM ruta " );
+         ResultSet re=declaracion.executeQuery();
+         while(re.next()){
+         combo.addItem(re.getString("direccion_rta"));
+         validar=false;
+         }
+         
+         
+        } catch (SQLException ex) {
+        
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,9 +62,6 @@ public class Recepcionist extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        nit = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        direccion = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -59,6 +71,7 @@ public class Recepcionist extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cui = new javax.swing.JTextField();
+        combo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -162,28 +175,16 @@ public class Recepcionist extends javax.swing.JFrame {
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 110, 450));
 
-        nit.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                nitKeyTyped(evt);
-            }
-        });
-        jPanel1.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 130, -1));
-
-        jLabel2.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
-        jLabel2.setText("Nit");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 30, -1));
-        jPanel1.add(direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, 130, -1));
-
         jLabel3.setFont(new java.awt.Font("Ubuntu Light", 1, 18)); // NOI18N
         jLabel3.setText("Direccion de destino");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
         jLabel4.setText("Tipo de prioridad");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin prioridad", "Prioridad" }));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 260, 130, -1));
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 130, -1));
 
         jButton1.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
         jButton1.setText("Generar factura");
@@ -196,7 +197,7 @@ public class Recepcionist extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
         jLabel5.setText("Cantidad de paquetes");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
 
         cantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,15 +209,20 @@ public class Recepcionist extends javax.swing.JFrame {
                 cantidadKeyTyped(evt);
             }
         });
-        jPanel1.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 310, 130, -1));
+        jPanel1.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, 130, -1));
 
         jButton2.setFont(new java.awt.Font("Umpush", 1, 14)); // NOI18N
         jButton2.setText("Enviar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 380, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
         jLabel6.setText("CUI");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, -1, -1));
 
         cui.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -224,6 +230,9 @@ public class Recepcionist extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cui, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, 130, -1));
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 130, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 490));
 
@@ -287,22 +296,6 @@ public class Recepcionist extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cuiKeyTyped
 
-    private void nitKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyTyped
-        // TODO add your handling code here:
-           char validar=evt.getKeyChar();
-        
-           if(Character.isLetter(validar) ){   
-        getToolkit().beep();
-        evt.consume();
-        }
-        
-           if(nit.getText().length()>9){
-        getToolkit().beep();
-        evt.consume();
-        
-           }
-    }//GEN-LAST:event_nitKeyTyped
-
     private void cantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidadKeyTyped
         // TODO add your handling code here:
            char validar=evt.getKeyChar();
@@ -323,16 +316,45 @@ public class Recepcionist extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if(validar()){
-        generarFactura();}
+            validarCliente();
+          //  generarFactura();
+        }
         else{
         JOptionPane.showMessageDialog(this, "Verifique Los datos");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-public boolean validar(){
-if(cui.getText().equals("")&& direccion.getText().equals("") && cantidad.getText().equals(""))
+public boolean validarCliente;
+    public boolean validar(){
+if(cui.getText().equals("") || cantidad.getText().equals("") || validar)
     return false;
 else return true;
 }
+public void validarCliente(){
+    validarCliente=false;
+boolean valid=true;
+        try {
+            PreparedStatement declaracion =connection.prepareStatement("SELECT cliente.cui FROM cliente WHERE cui=?");
+            int tmp=Integer.parseInt(cui.getText());
+            declaracion.setInt(1,tmp);
+             ResultSet re=declaracion.executeQuery();
+           while(re.next()){
+           if(tmp==re.getInt("cui")){
+           JOptionPane.showMessageDialog(this,"Cliente valido");
+            valid=false;
+            validarCliente=true;
+           }
+           }
+        } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+        }
+if(valid){
+JOptionPane.showMessageDialog(this,"Este cliente no existe");
+}    
+    
+    
+}
+
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         Welcome open =new Welcome();
@@ -354,6 +376,12 @@ else return true;
         this.setVisible(false);
         
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Paquete tmp=null;
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
  public void generarFactura(){
     LinkedList <String> lista=null;
@@ -414,8 +442,8 @@ else return true;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cantidad;
+    private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField cui;
-    private javax.swing.JTextField direccion;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -423,7 +451,6 @@ else return true;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -432,6 +459,5 @@ else return true;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField nit;
     // End of variables declaration//GEN-END:variables
 }
