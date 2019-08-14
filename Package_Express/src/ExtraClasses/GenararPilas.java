@@ -63,14 +63,15 @@ public class GenararPilas {
         declaracion.setInt(1,Pc.get(j));
         ResultSet res=declaracion.executeQuery();
         int id=0;
-        LinkedList <Cola> COLA=null;
+        LinkedList <Cola[]> COLA=null;
         COLA=new LinkedList();
   
         while(res.next()){
              id=res.getInt("id_pc");
            
-           Cola cola=null;
-           cola=new Cola(res.getInt("id_pc"),res.getInt("precioPc"),res.getInt("direccion_rta"),res.getString("estadoPc"),res.getInt("tamaño"));
+           Cola [] cola=new Cola[res.getInt("tamaño")];
+           //cola[1]=new Cola(null);//res.getInt("id_pc"),res.getInt("precioPc"),res.getInt("direccion_rta"),res.getString("estadoPc"),res.getInt("tamaño"));
+           
            COLA.add(cola);
        
         
@@ -78,6 +79,7 @@ public class GenararPilas {
         
        ColaRuta c=null;
        c=new ColaRuta(COLA,Pc.get(j));
+      
       COLARUTA.add(c);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -85,15 +87,15 @@ public class GenararPilas {
           
            break; 
         }
-         
+        
         }
         }  
-      RecorrerColas();
-      
+  
+       RecorrerColas();
     }
     
     public void RecorrerColas(){
-     
+     System.out.println(COLARUTA.size());
     int a=0;
     for(int i=0; i<COLARUTA.size();i++){
         if(1==COLARUTA.get(i).getName()){
@@ -101,11 +103,8 @@ public class GenararPilas {
         }
     
     }
-       LinkedList<Cola> c=COLARUTA.get(a).getA();
-       for(int i=0;i<c.size();i++){
-       System.out.println(c.get(i).getTamaño());
-       }
-    
+      
+   
     }
     
     

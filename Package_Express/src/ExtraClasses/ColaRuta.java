@@ -12,16 +12,17 @@ import java.util.LinkedList;
  * @author jhonny
  */
 public class ColaRuta {
-    private LinkedList <Cola> a;
+    private LinkedList <Cola[]> a;
     private int name;
 
-    public LinkedList<Cola> getA() {
-        return a;
+    ColaRuta(LinkedList<Cola[]> COLA, int Name) {
+        this.a=COLA;
+        this.name=Name;
     }
 
-    public void setA(LinkedList<Cola> a) {
-        this.a = a;
-    }
+  
+
+
 
     public int getName() {
         return name;
@@ -31,9 +32,13 @@ public class ColaRuta {
         this.name = name;
     }
 
-   
-    public ColaRuta(LinkedList <Cola> a, int name){
-   this.a=a;
-    this.name=name;
+    public LinkedList<Cola[]> getA() {
+        return a;
     }
+
+    public void setA(LinkedList<Cola[]> a) {
+        this.a = a;
+    }
+
+  
 }

@@ -15,13 +15,13 @@ public class Cola {
     private int ruta;
     private String estado;
     private int tamaño;
-    
-    public Cola(int id, int precio, int ruta, String estado, int tamaño){
-    this.id=id;
-    this.precio=precio;
-    this.ruta=ruta;
-    this.estado=estado;
-            this.tamaño=tamaño;
+    private Paquete paquete;
+    public Cola(Paquete paquete){
+   this.paquete=paquete;
+    }
+
+    public Paquete getPaquete() {
+        return paquete;
     }
 
     public int getId() {
