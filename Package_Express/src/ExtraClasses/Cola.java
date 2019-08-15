@@ -11,20 +11,72 @@ package ExtraClasses;
  */
 public class Cola {
     private int id;
+    
     private int precio;
     private int ruta;
     private String estado;
-    private int tamaño;
-    private Paquete paquete;
-  
     
-    public Cola(Paquete paquete){
-   this.paquete=paquete;
+    private int capacidad;
+     Paquete paquete[];
+  int tamaño=0;
+  int top = -1;
+    int rear = 0;
+    
+    public Cola( int tamaño){
+
+   this.capacidad=tamaño;
+   paquete=new Paquete[tamaño];
     }
 
-    public Paquete getPaquete() {
-        return paquete;
+    public void push(Paquete tmp){
+        System.out.println("hil");
+        if(top<capacidad -1){
+            top++;
+            paquete[top]= tmp;
+            System.out.println("Numero "+ tmp + " es ingresado a la cola!");
+            
+        }
+        else{
+            System.out.println("Cola sobrecargada");
+        }
     }
+    
+     public Paquete pop(){
+        if(top>=0){
+            Paquete numero = paquete[0];
+            System.out.println("Obtener "+numero);
+            ordenar();
+            top--;
+            return numero;
+        }
+        else{
+            System.out.println("vacia aaaaaaaaaa");
+            return null;
+        }
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    private void ordenar() {
+        if(top>0){
+            for(int i= 0; i<top; i++)
+            {
+                if(i<top){
+                    paquete[i]= paquete[i+1];
+                }
+                if(i==top)
+                    paquete[i]=null;
+            }
+        }
+    }
+    
+    
 
     public int getId() {
         return id;
