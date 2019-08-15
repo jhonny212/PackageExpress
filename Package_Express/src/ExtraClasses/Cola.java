@@ -5,6 +5,8 @@
  */
 package ExtraClasses;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jhonny
@@ -50,8 +52,8 @@ public class Cola {
             return numero;
         }
         else{
-            System.out.println("vacia aaaaaaaaaa");
-            return null;
+            setEstado("Llena");
+          return null;
         }
     }
 

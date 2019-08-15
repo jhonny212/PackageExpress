@@ -8,18 +8,15 @@ import static Inicio.IniciarConeccion.connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.LinkedList;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 public class GenararPilas {
 
     /**
      *
      */
     
-    public LinkedList <ColaRuta> COLARUTA =new LinkedList();
+    public static LinkedList <ColaRuta> COLARUTA =new LinkedList();
     
     public GenararPilas(){
     
@@ -71,6 +68,12 @@ public class GenararPilas {
            
            Cola cola=null;
            cola=new Cola(res.getInt("tamaño"));
+           cola.setEstado("Vacia");
+           cola.setId(res.getInt("id_pc"));
+           cola.setPrecio(res.getInt("precioPc"));
+           cola.setRuta(res.getInt("direccion_rta"));
+           
+           
            COLA.add(cola);
        
         
@@ -90,7 +93,7 @@ public class GenararPilas {
         }
         }  
   
-    //   RecorrerColas();
+       RecorrerColas();
     }
     
       public void RecorrerColas(){
@@ -104,9 +107,7 @@ public class GenararPilas {
     }
        LinkedList<Cola> c=COLARUTA.get(a).getA();
        for(int i=0;i<c.size();i++){
-       for(int j=0; j<13;j++){
-       c.get(i).push(null);
-       }
+       System.out.println(c.get(i).getId()+"a");
        }
        
        

@@ -1,42 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Recepcionista;
 import ExtraClasses.Paquete;
 import static Inicio.IniciarConeccion.connection;
 import Inicio.Welcome;
-import java.awt.Image;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
-/**
- *
- * @author jhonny-G
- */
-public class Recepcionist extends javax.swing.JFrame {
+import static ExtraClasses.GenararPilas.COLARUTA;
 
-   public boolean validar=true;
+import javax.swing.JOptionPane;
+public class Recepcionist extends javax.swing.JFrame {
+    public LinkedList <Paquete> Package=null;
+    public int costo;
     public Recepcionist() {
         initComponents();
         this.setLocationRelativeTo(this);
+        Package=new LinkedList();
         llenarCombo();
+        this.costo=0;
      
     }
     public void llenarCombo(){
-    combo.removeAllItems();
+   combo.removeAllItems();
         try {
-         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta FROM ruta " );
+         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta, ruta.id_ruta FROM ruta " );
          ResultSet re=declaracion.executeQuery();
          while(re.next()){
-         combo.addItem(re.getString("direccion_rta"));
-         validar=false;
+         combo.addItem(re.getString("direccion_rta")+" "+"ID:"+re.getString("id_ruta"));
          }
          
          
@@ -54,6 +45,7 @@ public class Recepcionist extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -64,14 +56,16 @@ public class Recepcionist extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        kind = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        cantidad = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        peso = new javax.swing.JTextField();
+        send = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cui = new javax.swing.JTextField();
         combo = new javax.swing.JComboBox<>();
+        add = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -170,71 +164,90 @@ public class Recepcionist extends javax.swing.JFrame {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 110, 450));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 110, 510));
 
-        jLabel3.setFont(new java.awt.Font("Ubuntu Light", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jLabel3.setText("Direccion de destino");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, -1, -1));
 
-        jLabel4.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jLabel4.setText("Tipo de prioridad");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin prioridad", "Prioridad" }));
-        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 130, -1));
+        kind.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sin prioridad", "Prioridad" }));
+        jPanel1.add(kind, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 170, 130, -1));
 
-        jButton1.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
-        jButton1.setText("Generar factura");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel5.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
+        jLabel5.setText("Peso de paquete");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, -1, -1));
+
+        peso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                pesoActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 380, -1, 40));
-
-        jLabel5.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
-        jLabel5.setText("Cantidad de paquetes");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
-
-        cantidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cantidadActionPerformed(evt);
-            }
-        });
-        cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+        peso.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                cantidadKeyTyped(evt);
+                pesoKeyTyped(evt);
             }
         });
-        jPanel1.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 290, 130, -1));
+        jPanel1.add(peso, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, 130, -1));
 
-        jButton2.setFont(new java.awt.Font("Umpush", 1, 14)); // NOI18N
-        jButton2.setText("Enviar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        send.setFont(new java.awt.Font("Umpush", 1, 14)); // NOI18N
+        send.setText("Enviar");
+        send.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                sendActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 380, -1, -1));
+        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 500, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("Umpush", 1, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jLabel6.setText("CUI");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
 
+        cui.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cuiActionPerformed(evt);
+            }
+        });
         cui.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 cuiKeyTyped(evt);
             }
         });
-        jPanel1.add(cui, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, 130, -1));
+        jPanel1.add(cui, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 130, -1));
 
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 130, -1));
+        jPanel1.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 130, 130, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 490));
+        add.setText("Agregar");
+        add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
+        jPanel1.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 340, 220));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 560));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -281,6 +294,7 @@ public class Recepcionist extends javax.swing.JFrame {
     }
     private void cuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cuiKeyTyped
         // TODO add your handling code here:
+       
         char validar=evt.getKeyChar();
         
            if(Character.isLetter(validar) ){   
@@ -296,7 +310,7 @@ public class Recepcionist extends javax.swing.JFrame {
         
     }//GEN-LAST:event_cuiKeyTyped
 
-    private void cantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidadKeyTyped
+    private void pesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pesoKeyTyped
         // TODO add your handling code here:
            char validar=evt.getKeyChar();
         
@@ -305,27 +319,16 @@ public class Recepcionist extends javax.swing.JFrame {
         evt.consume();
         }
         
-           if(cantidad.getText().length()>10){
+           if(peso.getText().length()>10){
         getToolkit().beep();
         evt.consume();
         
            }
         
-    }//GEN-LAST:event_cantidadKeyTyped
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        if(validar()){
-            validarCliente();
-          //  generarFactura();
-        }
-        else{
-        JOptionPane.showMessageDialog(this, "Verifique Los datos");
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_pesoKeyTyped
 public boolean validarCliente;
     public boolean validar(){
-if(cui.getText().equals("") || cantidad.getText().equals("") || validar)
+if(cui.getText().equals("") || peso.getText().equals("") )
     return false;
 else return true;
 }
@@ -359,14 +362,14 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
         // TODO add your handling code here:
         Welcome open =new Welcome();
         open.setVisible(true);
-        this.setVisible(false);
+        dispose();
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void cantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cantidadActionPerformed
+    private void pesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesoActionPerformed
         // TODO add your handling code here:
      
-    }//GEN-LAST:event_cantidadActionPerformed
+    }//GEN-LAST:event_pesoActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -377,19 +380,78 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Paquete tmp=null;
+    private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
+        generarFactura();
+        int cod=0;
+        cui.enable();
+        cui.setText("");
+        peso.setText("");
+            for(int i=0; i<COLARUTA.size();i++){
+        if(Integer.parseInt(obtenerLetra())==COLARUTA.get(i).getName()){
+            cod=i;
+            break;
+        }
+    
+    }
+    }//GEN-LAST:event_sendActionPerformed
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+    
+        if(validar()){
+            if(cui.isEnabled()){
+            validarCliente();}
+            cui.disable();
+            if(validarCliente){
+            crearPaquete();
+            Paquete tmp;
+            tmp=new Paquete(0,Integer.parseInt(peso.getText()),Integer.parseInt(obtenerLetra()),"by way",
+            costo,kind.getSelectedItem().toString(),Integer.parseInt(cui.getText()),0);
+            Package.add(tmp);
+            }
+            }   
+    }//GEN-LAST:event_addActionPerformed
+public void crearPaquete(){
+  
+    
+    try {
+          PreparedStatement declaracion =connection.prepareStatement("INSERT INTO paquete(peso, id_ruta, estado, precio,prioridad"
+                  + ",cui) VALUES (?, ?, ?, ?,?,?)");
+          PreparedStatement precio =connection.prepareStatement("SELECT * FROM datos ");
+            ResultSet res=precio.executeQuery();
+         
+          
+            while(res.next()){
+            this.costo=res.getInt("precioLibra")+res.getInt("precioEnvio");
+            
+    }
+           
+           
+          declaracion.setInt(1,Integer.parseInt(peso.getText()));
+          declaracion.setInt(2,Integer.parseInt(obtenerLetra()) );
+          declaracion.setString(3, "by way");
+           
+          declaracion.setInt(4, costo);
+          declaracion.setString(5, kind.getSelectedItem().toString());
+          declaracion.setInt(6, Integer.parseInt(cui.getText()));
+          declaracion.executeUpdate();
+          
+        } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+        }
+}
+    private void cuiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuiActionPerformed
         
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_cuiActionPerformed
 
  public void generarFactura(){
     LinkedList <String> lista=null;
-    if(cantidad.getText().equals("")){
+    if(peso.getText().equals("")){
     JOptionPane.showMessageDialog(this, "De una cantidad > 0");
     }else{
     int tmp=0;
-    tmp = Integer.parseInt(cantidad.getText());
+    tmp = Integer.parseInt(peso.getText());
     String peso;
     for(int i=0;i<=tmp;i++){
     peso="";
@@ -403,7 +465,30 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
     
     
  }   
+  public String obtenerLetra(){
+      String letra="";
+       String tmp=combo.getSelectedItem().toString();
+     String [] vect=tmp.split("");
+     String numbers="1234567890";
+     String [] vect2=numbers.split("");
+     
+     for(int i=0; i<tmp.length();i++){
+       
+     for(int j=0;j<numbers.length();j++){
+         
+     if(vect[i].equals(vect2[j]))
+     {
+        letra+=vect[i]; 
+     
+     break;
+     }
+     }
+     }
     
+        
+        
+        
+    return letra;}   
     
     /**
      * @param args the command line arguments
@@ -441,15 +526,12 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField cantidad;
+    private javax.swing.JButton add;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField cui;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -459,5 +541,11 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> kind;
+    private javax.swing.JTextField peso;
+    private javax.swing.JButton send;
     // End of variables declaration//GEN-END:variables
 }
