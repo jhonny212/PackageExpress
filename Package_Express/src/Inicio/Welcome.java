@@ -9,14 +9,10 @@ import javax.swing.JOptionPane;
 import Recepcionista.Recepcionist;
 import Operator.operator;
 import Administrador.Admin;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import ExtraClasses.Bodega;
 import static Inicio.IniciarConeccion.connection;
 import ExtraClasses.GenararPilas;
 /**
@@ -24,18 +20,19 @@ import ExtraClasses.GenararPilas;
  * @author jhonny-G
  */
 public class Welcome extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Welcome
-     */
+public static String USER;
     public Welcome() {
+        USER="";
         initComponents();
         this.setLocationRelativeTo(this);
         IniciarConeccion a=new IniciarConeccion();
         a.IniciarConeccion();
         
-        GenararPilas b=new GenararPilas();
+       GenararPilas b=new GenararPilas();
         b.GeneratePilas();
+        
+      
+        
     }
 
  
@@ -114,7 +111,7 @@ public class Welcome extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Waree", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(13, 1, 1));
-        jButton3.setText("Eliminar usuario");
+        jButton3.setText("Desactivar Usuario");
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -232,15 +229,17 @@ public class Welcome extends javax.swing.JFrame {
         Recepcionist open =new Recepcionist();
         open.setVisible(true);
         dispose();
+        
         }else if(tmp.equals("Administrador")){
         Admin a =new Admin();
         a.setVisible(true);
        dispose();
         }else if(tmp.equals("Operador")){
-        operator a = new operator();
-        a.setVisible(true);
+             this.USER=Usuario.getText();
+             operator a = new operator();
+            a.show();
        dispose();
-            
+           
         }else {
         JOptionPane.showMessageDialog(this,"Los datos no coinciden");
         }
@@ -253,7 +252,8 @@ public class Welcome extends javax.swing.JFrame {
         open.show();
         
     }//GEN-LAST:event_jButton3ActionPerformed
-public void validar(){
+    
+    public void validar(){
   
         try {
    
@@ -267,8 +267,9 @@ public void validar(){
     this.tmp=res.getString("tipoUser");
     }
     
+    
         } catch (SQLException ex) {
-             JOptionPane.showMessageDialog(this, ex.getMessage());
+            System.out.println(ex.getMessage());
         }
                 
   

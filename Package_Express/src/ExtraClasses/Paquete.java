@@ -15,6 +15,15 @@ public class Paquete {
     private String prioridad;
     private int cui;
     private int id_pc;
+    private int movimientos;
+
+    public int getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(int movimientos) {
+        this.movimientos = movimientos;
+    }
     public Paquete(int idp, int peso, int ruta, String state, int cost, String priori, int cui, int pc){
         this.id_paquete=idp;
         this.peso=peso;
@@ -24,6 +33,7 @@ public class Paquete {
         this.prioridad=priori;
         this.cui=cui;
         this.id_pc=pc;
+      
         
     }
 

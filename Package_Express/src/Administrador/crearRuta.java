@@ -5,6 +5,7 @@
  */
 package Administrador;
 
+import ExtraClasses.GenararPilas;
 import Inicio.IniciarConeccion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -88,13 +89,16 @@ public class crearRuta extends javax.swing.JInternalFrame {
          IniciarConeccion a=new IniciarConeccion();
          Connection connection=null;
          connection=a.getConnection();
-             declaracion=connection.prepareStatement("INSERT INTO ruta(precio_rta, direccion_rta) VALUES (?, ?)");
+             declaracion=connection.prepareStatement("INSERT INTO ruta(precio_rta, direccion_rta, estado) VALUES (?, ?, ?)");
             declaracion.setInt(1, Integer.parseInt(precio.getText()));
             declaracion.setString(2,direccion.getText() );
-              int  rs=declaracion.executeUpdate();
+            declaracion.setString(3,"activo" ); 
+            int  rs=declaracion.executeUpdate();
             if(rs>0){
                 JOptionPane.showMessageDialog(this, "Ruta creada correctamente");
                 validar=false;
+                GenararPilas abrir=new GenararPilas();
+        abrir.GeneratePilas();
                 }
         } catch (SQLException ex) {
         

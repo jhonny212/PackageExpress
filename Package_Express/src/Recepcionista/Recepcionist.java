@@ -1,4 +1,6 @@
 package Recepcionista;
+import ExtraClasses.Cola;
+import static ExtraClasses.GenararPilas.COLARUTA;
 import ExtraClasses.Paquete;
 import static Inicio.IniciarConeccion.connection;
 import Inicio.Welcome;
@@ -7,7 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import static ExtraClasses.GenararPilas.COLARUTA;
+import java.lang.IndexOutOfBoundsException;
+import java.lang.NullPointerException;
+import java.lang.NumberFormatException;
+import ExtraClasses.GenararPilas;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 public class Recepcionist extends javax.swing.JFrame {
@@ -24,8 +31,9 @@ public class Recepcionist extends javax.swing.JFrame {
     public void llenarCombo(){
    combo.removeAllItems();
         try {
-         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta, ruta.id_ruta FROM ruta " );
-         ResultSet re=declaracion.executeQuery();
+        declaracion =connection.prepareStatement("SELECT ruta.direccion_rta, ruta.id_ruta FROM ruta WHERE estado=? " );
+        declaracion.setString(1, "activo");
+        ResultSet re=declaracion.executeQuery();
          while(re.next()){
          combo.addItem(re.getString("direccion_rta")+" "+"ID:"+re.getString("id_ruta"));
          }
@@ -54,6 +62,7 @@ public class Recepcionist extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         kind = new javax.swing.JComboBox<>();
@@ -94,7 +103,7 @@ public class Recepcionist extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(92, Short.MAX_VALUE)
+                .addContainerGap(112, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68))
         );
@@ -106,7 +115,7 @@ public class Recepcionist extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, -1));
 
         jPanel4.setBackground(new java.awt.Color(177, 187, 198));
 
@@ -136,6 +145,14 @@ public class Recepcionist extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/box.png"))); // NOI18N
+        jButton1.setContentAreaFilled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -152,6 +169,10 @@ public class Recepcionist extends javax.swing.JFrame {
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,11 +181,13 @@ public class Recepcionist extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(38, 38, 38)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(36, 36, 36)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(36, 36, 36)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 110, 510));
@@ -203,7 +226,7 @@ public class Recepcionist extends javax.swing.JFrame {
                 sendActionPerformed(evt);
             }
         });
-        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 500, -1, -1));
+        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 500, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jLabel6.setText("CUI");
@@ -254,55 +277,21 @@ public class Recepcionist extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        int cui=0;
-        while(Integer.toString(cui).length()!=9){
-        cui=Integer.parseInt(JOptionPane.showInputDialog("Ingrese un cui correcto"));
-        }
-       String nombre=JOptionPane.showInputDialog("Ingrese nombre del cliente");
-       
-       int nit=Integer.parseInt(JOptionPane.showInputDialog("Ingrese un nit correcto"));
- 
-      String direccion=JOptionPane.showInputDialog("Ingrese direccion del cliente");
-      
-    CrearCliente(cui, nombre, nit, direccion);
-       
-        
+   CreateClient a =new CreateClient();
+   a.show();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    public void CrearCliente(int cui, String name, int nit, String direccion){
-    
-        boolean validar=true;
-        try {
-            PreparedStatement declaracion =connection.prepareStatement("INSERT INTO cliente(cui, nombre, nit , direccion) VALUES (?, ?, ?, ?)");
-            declaracion.setInt(1, cui);
-            declaracion.setString(2, name);
-            declaracion.setInt(3, nit);
-            declaracion.setString(4, direccion);
-             int  rs=declaracion.executeUpdate();
-                if(rs>0){
-                JOptionPane.showMessageDialog(this, "Cliente agregado");
-                validar=false;
-                }
-        } catch (SQLException ex) {
-        
-        }
-               
-       if(validar){
-                JOptionPane.showMessageDialog(this, "Error al agregar cliente");
-                } 
-    
-    }
     private void cuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cuiKeyTyped
         // TODO add your handling code here:
        
         char validar=evt.getKeyChar();
         
-           if(Character.isLetter(validar) ){   
+        if(Character.isLetter(validar) ){   
         getToolkit().beep();
         evt.consume();
         }
         
-           if(cui.getText().length()>10){
+           if(cui.getText().length()>9){
         getToolkit().beep();
         evt.consume();
         
@@ -380,63 +369,95 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
-        generarFactura();
+    
+    
+    public void Send(){
         int cod=0;
-        cui.enable();
-        cui.setText("");
-        peso.setText("");
-            for(int i=0; i<COLARUTA.size();i++){
+       for(int i=0; i<COLARUTA.size();i++){
         if(Integer.parseInt(obtenerLetra())==COLARUTA.get(i).getName()){
             cod=i;
             break;
         }
-    
+        
     }
+       try{
+            LinkedList<Cola> c=COLARUTA.get(cod).getA();
+            
+           
+            for(int i=0;i<Package.size();i++){
+            if(c.get(0).isFull()){
+            
+            }else{
+            c.get(0).push(Package.get(i));
+            ActualizarBase(c);
+            }
+            
+            }
+ 
+       }catch(IndexOutOfBoundsException e){
+       
+       }
+       
+    }
+    
+    private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
+        generarFactura();
+        cui.enable();
+            
     }//GEN-LAST:event_sendActionPerformed
-
+public PreparedStatement declaracion=null;
+    
+   
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
     
         if(validar()){
             if(cui.isEnabled()){
-            validarCliente();}
+            validarCliente();
+            }
             cui.disable();
             if(validarCliente){
+                try{
+                
+                
             crearPaquete();
             Paquete tmp;
             tmp=new Paquete(0,Integer.parseInt(peso.getText()),Integer.parseInt(obtenerLetra()),"by way",
             costo,kind.getSelectedItem().toString(),Integer.parseInt(cui.getText()),0);
             Package.add(tmp);
+            Send();
+           GenararPilas a=new GenararPilas();
+            a.GeneratePilas();
+            }catch(NumberFormatException e){
+                
+                }
             }
             }   
     }//GEN-LAST:event_addActionPerformed
+
+   
 public void crearPaquete(){
   
     
     try {
           PreparedStatement declaracion =connection.prepareStatement("INSERT INTO paquete(peso, id_ruta, estado, precio,prioridad"
-                  + ",cui) VALUES (?, ?, ?, ?,?,?)");
-          PreparedStatement precio =connection.prepareStatement("SELECT * FROM datos ");
-            ResultSet res=precio.executeQuery();
-         
-          
-            while(res.next()){
-            this.costo=res.getInt("precioLibra")+res.getInt("precioEnvio");
-            
-    }
-           
+          + ",cui, id_pc) VALUES (?, ?, ?, ?,?,?,?)");
+        
            
           declaracion.setInt(1,Integer.parseInt(peso.getText()));
           declaracion.setInt(2,Integer.parseInt(obtenerLetra()) );
           declaracion.setString(3, "by way");
            
-          declaracion.setInt(4, costo);
+          declaracion.setInt(4, 0);
           declaracion.setString(5, kind.getSelectedItem().toString());
           declaracion.setInt(6, Integer.parseInt(cui.getText()));
+          declaracion.setInt(7, 0);
           declaracion.executeUpdate();
-          
-        } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
+            
+          GenerarGanancia();
+        } catch (SQLException ex   ) {
+       System.out.println(ex.getMessage());
+        } catch(NumberFormatException e){
+        
         }
 }
     private void cuiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuiActionPerformed
@@ -445,29 +466,56 @@ public void crearPaquete(){
         
     }//GEN-LAST:event_cuiActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        PickUpPackage a=new PickUpPackage();
+        a.show();
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+public void GenerarGanancia(){
+        try {
+            PreparedStatement tmp;
+            this.costo=0;
+            int cod=0;
+            tmp=connection.prepareStatement("SELECT paquete.id_paquete FROM paquete order by id_paquete desc limit 1 ");
+            ResultSet resultado=tmp.executeQuery();
+            while(resultado.next()){
+                cod=resultado.getInt("id_paquete");
+            }
+            PreparedStatement precio =connection.prepareStatement("SELECT ruta.precio_rta FROM ruta WHERE id_ruta=?");
+            precio.setInt(1, Integer.parseInt(obtenerLetra()) );
+            ResultSet res=precio.executeQuery();
+            while(res.next()){
+                this.costo=res.getInt("precio_rta");
+            }
+            
+            PreparedStatement G =connection.prepareStatement("SELECT * FROM datos ");
+            precio.setInt(1, Integer.parseInt(obtenerLetra()) );
+            ResultSet Gs=G.executeQuery();
+            while(Gs.next()){
+                this.costo+=((Integer.parseInt(peso.getText()))*(Gs.getInt("precioLibra"))+Gs.getInt("precioEnvio"));
+            }
+            
+            
+            PreparedStatement ganancia =connection.prepareStatement("INSERT INTO ganancia(id_ruta,id_paquete, cui, ganancia) VALUES (?,?,?,?)");
+            
+            ganancia.setInt(1, Integer.parseInt(obtenerLetra()) );
+            ganancia.setInt(2, cod);
+            ganancia.setInt(3, Integer.parseInt(cui.getText()));
+            ganancia.setInt(4,this.costo );
+            ganancia.executeUpdate();
+        } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+          
+
+}
  public void generarFactura(){
-    LinkedList <String> lista=null;
-    if(peso.getText().equals("")){
-    JOptionPane.showMessageDialog(this, "De una cantidad > 0");
-    }else{
-    int tmp=0;
-    tmp = Integer.parseInt(peso.getText());
-    String peso;
-    for(int i=0;i<=tmp;i++){
-    peso="";
-    
-    lista.add(peso);
-    }
-    }
-    
- 
-    
-    
     
  }   
   public String obtenerLetra(){
-      String letra="";
-       String tmp=combo.getSelectedItem().toString();
+    String letra="";
+      try{
+     String tmp=combo.getSelectedItem().toString();
      String [] vect=tmp.split("");
      String numbers="1234567890";
      String [] vect2=numbers.split("");
@@ -484,10 +532,9 @@ public void crearPaquete(){
      }
      }
      }
-    
-        
-        
-        
+    }catch(NullPointerException e){
+     
+     }   
     return letra;}   
     
     /**
@@ -529,6 +576,7 @@ public void crearPaquete(){
     private javax.swing.JButton add;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField cui;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -548,4 +596,34 @@ public void crearPaquete(){
     private javax.swing.JTextField peso;
     private javax.swing.JButton send;
     // End of variables declaration//GEN-END:variables
+
+    public void ActualizarBase(LinkedList<Cola> c) {
+       
+        int cod=0;
+      try {
+           PreparedStatement tmp;
+            tmp=connection.prepareStatement("SELECT paquete.id_paquete FROM paquete order by id_paquete desc limit 1 ");
+            ResultSet res=tmp.executeQuery();
+            while(res.next()){
+            cod=res.getInt("id_paquete");
+            }
+                
+        } catch (SQLException ex) {
+       System.out.println(ex.getMessage()+"1");
+       
+        }
+        
+        
+      try {
+            declaracion=connection.prepareStatement("UPDATE paquete SET id_pc=? WHERE id_paquete=?");
+            declaracion.setInt(1,c.get(0).getId());
+            declaracion.setInt(2, cod);
+            declaracion.executeUpdate();
+                
+        } catch (SQLException ex) {
+       
+       System.out.println(ex.getMessage()+"2");
+       
+        }
+    }
 }

@@ -5,20 +5,74 @@
  */
 package Operator;
 
-/**
- *
- * @author jhonny
- */
+import ExtraClasses.Cola;
+import static Inicio.IniciarConeccion.connection;
+import Inicio.Welcome;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import static ExtraClasses.GenararPilas.COLARUTA;
+import ExtraClasses.Paquete;
+import static Inicio.Welcome.USER;
+import java.awt.Color;
+import java.sql.ResultSet;
+import java.util.LinkedList;
+import javax.swing.JButton;
+import ExtraClasses.Bodega;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 public class operator extends javax.swing.JFrame {
 
-    /**
-     * Creates new form operator
-     */
+   
     public operator() {
         initComponents();
         this.setLocationRelativeTo(this);
-    }
+        
+        Control.disable();
+        
+        check.disable();
+      ActualizarCombo();
+    
+    Image();
 
+
+    
+      
+    }
+    public void Image(){
+        int tamaño=5;
+     JButton cola []=new JButton[tamaño];
+     
+
+    this.Cola.setLayout(new java.awt.GridLayout(tamaño,0));
+    for(int i=0;i<tamaño;i++){
+    cola[i]=new JButton();
+    
+    cola[i].setBackground(Color.BLACK);
+    
+    
+    this.Cola.add(cola[i]);
+    }
+    
+    }
+    
+    public void ActualizarCombo(){
+    PC.removeAllItems();
+      try {
+          PreparedStatement declaracion =connection.prepareStatement("SELECT controlPoint.id_pc, controlPoint.estadoPc FROM controlPoint WHERE estadoPc=?");
+          declaracion.setString(1, USER);
+           ResultSet res=declaracion.executeQuery();
+             while(res.next()){
+    this.PC.addItem(res.getString("id_pc"));
+    }
+          
+      } catch (SQLException ex) {
+      
+      }
+     
+  
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,6 +86,16 @@ public class operator extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        PC = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        Control = new javax.swing.JPanel();
+        Cola = new javax.swing.JPanel();
+        time = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        check = new javax.swing.JButton();
+        varId = new javax.swing.JLabel();
+        seleccionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -50,10 +114,10 @@ public class operator extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 10, 430));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 10, 470));
 
         jPanel4.setBackground(java.awt.Color.white);
 
@@ -65,20 +129,240 @@ public class operator extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 10, 430));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 0, 10, 470));
 
-        jButton1.setText("jButton1");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, -1, -1));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Back.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 70, 40));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 2, 520, 430));
+        jButton2.setFont(new java.awt.Font("Ubuntu", 1, 16)); // NOI18N
+        jButton2.setText("Asignar PC");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 17, 120, 30));
+
+        PC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(PC, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 90, -1));
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Seleccionar punto de control");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
+
+        Control.setBackground(new java.awt.Color(45, 34, 24));
+        Control.setBorder(new javax.swing.border.MatteBorder(null));
+        Control.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Cola.setBackground(new java.awt.Color(182, 173, 165));
+
+        javax.swing.GroupLayout ColaLayout = new javax.swing.GroupLayout(Cola);
+        Cola.setLayout(ColaLayout);
+        ColaLayout.setHorizontalGroup(
+            ColaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 80, Short.MAX_VALUE)
+        );
+        ColaLayout.setVerticalGroup(
+            ColaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+
+        Control.add(Cola, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 80, 200));
+
+        time.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                timeKeyTyped(evt);
+            }
+        });
+        Control.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 140, -1));
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 20)); // NOI18N
+        jLabel2.setForeground(java.awt.Color.white);
+        jLabel2.setText("Tiempo en cola");
+        Control.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+
+        check.setText("Registrar");
+        check.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkActionPerformed(evt);
+            }
+        });
+        Control.add(check, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, -1, -1));
+
+        varId.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        varId.setForeground(java.awt.Color.white);
+        Control.add(varId, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 150, 40));
+
+        jPanel1.add(Control, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 420, 260));
+
+        seleccionar.setText("Seleccionar");
+        seleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seleccionarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(seleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 2, 550, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Welcome a=new Welcome();
+        a.show();
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Select a=new Select();
+        a.show();
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+public int id_pc;
+public int ruta;
+    private void seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarActionPerformed
+         
+        
+          this.id_pc=Integer.parseInt(PC.getSelectedItem().toString());
+          
+        try {
+          PreparedStatement declaracion =connection.prepareStatement("SELECT controlPoint.direccion_rta FROM controlPoint WHERE id_pc=?");
+          declaracion.setInt(1, id_pc);
+          ResultSet res=declaracion.executeQuery();
+    
+    while(res.next()){
+    this.ruta=res.getInt("direccion_rta");
+    }
+          ObetenerCola();
+      } catch (SQLException ex) {
+         
+      }
+        
+    }//GEN-LAST:event_seleccionarActionPerformed
+
+    private void checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkActionPerformed
+      if(validar){
+      
+          
+          if(!this.Colasiguiente.isFull()){
+          
+           if(ColaPaquete.getTamaño()!=-1){
+          try {
+             Paquete tmp=null ;
+             tmp=ColaPaquete.pop();
+             tmp.setPrecio(tmp.getPrecio()+(tmp.getPeso())*(Integer.parseInt(time.getText())));
+             this.Colasiguiente.push(tmp);
+             
+              PreparedStatement declaracion=connection.prepareStatement("UPDATE paquete SET id_pc=?, precio=? WHERE id_paquete=?");
+              declaracion.setInt(1, Colasiguiente.getId());
+              declaracion.setInt(2, tmp.getPrecio());
+              declaracion.setInt(3, tmp.getId_paquete());
+              declaracion.executeUpdate();
+              Bodega open = new Bodega();
+              open.ActualizarBodega();
+          } catch (SQLException ex) {
+          System.out.println(ex.getMessage());
+          }
+          }else{
+               JOptionPane.showMessageDialog(this, "No hay paquetes en cola");
+           }
+          
+          
+          }else{
+          JOptionPane.showMessageDialog(this, "La siguiente punto de control esta lleno");
+          }
+      }else{
+          
+           if(ColaPaquete.getTamaño()!=-1){
+          try {
+             
+              Paquete tmp=null ;
+              tmp=ColaPaquete.pop();
+              tmp.setPrecio(tmp.getPrecio()+(tmp.getPeso())*(Integer.parseInt(time.getText())));
+              PreparedStatement declaracion=connection.prepareStatement("UPDATE paquete SET id_pc=?, estado=?, precio=? WHERE id_paquete=?");
+              declaracion.setInt(1, -1);
+              declaracion.setString(2,"destino");
+              declaracion.setInt(3, tmp.getPrecio());
+              declaracion.setInt(4, tmp.getId_paquete());
+              declaracion.executeUpdate();
+          } catch (SQLException ex) {
+          
+          }
+           }else{
+               JOptionPane.showMessageDialog(this, "No hay paquetes en cola");
+           }
+      
+      }
+        
+    }//GEN-LAST:event_checkActionPerformed
+
+    private void timeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timeKeyTyped
+      char a=evt.getKeyChar();
+      if(Character.isDigit(a)){
+      }else{
+      getToolkit().beep();
+      evt.consume();
+      }
+        
+    }//GEN-LAST:event_timeKeyTyped
+public Cola ColaPaquete;
+public Cola Colasiguiente;
+boolean validar;
+
+ public void ObetenerCola(){
+     validar=true;
+     ColaPaquete=null;
+ int a=0;
+    for(int i=0; i<COLARUTA.size();i++){
+        if(ruta==COLARUTA.get(i).getName()){
+        a=i;
+        }
+    
+    }
+  LinkedList<Cola> Colas=COLARUTA.get(a).getA();
+ for(int i=0; i<Colas.size();i++){
+ if(id_pc==Colas.get(i).getId()){
+     this.ColaPaquete=Colas.get(i);
+     try{
+     this.validar=true;
+     this.Colasiguiente=Colas.get(i+1);
+     }catch(IndexOutOfBoundsException ex){
+     this.validar=false;
+     }
+     
+     break;
+ }
+ }
+ 
+paint();
+ }
+
+ public void paint(){
+     System.out.print(ColaPaquete.getTamaño());
+  if(ColaPaquete.getTamaño()!=-1){
+     varId.setText("#Paquete "+Integer.toString(ColaPaquete.getTamaño()+1));
+        Control.enable();
+       
+        check.enable();
+ }else{
+ JOptionPane.showMessageDialog(this, "Esta Cola no puede ser procesada");
+ }
+
+ }  
+ 
+ 
+ 
+   /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -114,9 +398,19 @@ public class operator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Cola;
+    private javax.swing.JPanel Control;
+    private javax.swing.JComboBox<String> PC;
+    private javax.swing.JButton check;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JButton seleccionar;
+    private javax.swing.JTextField time;
+    private javax.swing.JLabel varId;
     // End of variables declaration//GEN-END:variables
 }

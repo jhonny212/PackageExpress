@@ -68,9 +68,9 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
         });
         jPanel2.add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 130, -1));
 
-        text.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
-        text.setText("WAITING...");
-        jPanel2.add(text, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 240, 50));
+        text.setFont(new java.awt.Font("Ubuntu Mono", 1, 16)); // NOI18N
+        text.setText("               WAITING...");
+        jPanel2.add(text, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 390, 50));
 
         jButton1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton1.setText("Verificar");
@@ -81,24 +81,33 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
         });
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 110, 40));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 310));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+public  int tmp;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
    boolean validar=true;
         try {
-            PreparedStatement declaracion =connection.prepareStatement("SELECT paquete.id_pc FROM paquete WHERE id_pc=?");
+            PreparedStatement declaracion =connection.prepareStatement("SELECT paquete.id_pc FROM paquete WHERE id_paquete=?");
             declaracion.setInt(1, Integer.parseInt(codigo.getText()));
-            
+            tmp=0;
             ResultSet res=declaracion.executeQuery();
             while(res.next()){
-            text.setText("EL PAQUETE SE ENCUENTRA EN EL PUNTO DE CONTROL ID"+res.getString("id_pc"));
+            tmp=res.getInt("id_pc");
             validar=false;
             }
+            if(tmp==0){
+            text.setText("El paquete esta en la bodega ");
+            }else if(tmp==-1){
+            text.setText("El paquete esta en el destino ");
+            }else if(!(tmp==0 && tmp==-1)){
+            text.setText("El paquete esta en el punto de control "+tmp);
+            }
+            
+            
         } catch (SQLException ex) {
-        
+        System.out.println(ex.getMessage());
         }
     if(validar){
         JOptionPane.showMessageDialog(this, "Codigo de paquete no valido");
@@ -108,7 +117,7 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
 
     private void codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyTyped
                 char validar=evt.getKeyChar();
-          if(Character.isDigit(validar)  ){   
+          if(Character.isLetter(validar)  ){   
         getToolkit().beep();
         evt.consume();
         }

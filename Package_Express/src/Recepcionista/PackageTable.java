@@ -5,19 +5,61 @@
  */
 package Recepcionista;
 
+import ExtraClasses.Paquete;
+import static Inicio.IniciarConeccion.connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
+
+
 /**
  *
  * @author jhonny
  */
 public class PackageTable extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form PackageTable
-     */
+public LinkedList<Paquete> paquetes;    
     public PackageTable() {
         initComponents();
+        paquetes=new LinkedList();
+        RegistrarDatos();
+        llenarTabla();
     }
 
+    public void RegistrarDatos(){
+        try {
+            PreparedStatement listado =connection.prepareStatement("SELECT paquete.id_paquete, paquete.cui, paquete.id_ruta FROM paquete WHERE estado=?");
+            listado.setString(1, "destino");
+            ResultSet res=listado.executeQuery();
+    
+        while(res.next()){
+            Paquete tmp=new Paquete(res.getInt("id_paquete"),0,res.getInt("id_ruta"),null,0,null,res.getInt("cui"),0);
+            paquetes.add(tmp);
+        }
+        } catch (SQLException ex) {
+        
+        }
+    
+    }
+    public void llenarTabla(){
+    String matris[][]=new String[paquetes.size()][3];
+    for(int i=0; i<paquetes.size();i++){
+    matris[i][0]=Integer.toString(paquetes.get(i).getId_paquete());
+    matris[i][1]=Integer.toString(paquetes.get(i).getCui());
+    matris[i][2]=Integer.toString(paquetes.get(i).getId_ruta());
+ 
+    }
+    
+       
+     tabla.setModel(new javax.swing.table.DefaultTableModel(
+          matris,
+            new String [] {
+                "Cod_paquete", "Cui_client", "Ruta"
+            }
+        ));
+     tabla.disable();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +73,7 @@ public class PackageTable extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
 
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -69,15 +111,12 @@ public class PackageTable extends javax.swing.JInternalFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 350, 30));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Cod_paquete", "Cui_client", "Peso"
+                "Cod_paquete", "Cui_client", "Ruta"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -88,9 +127,9 @@ public class PackageTable extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 400, 100));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 400, 200));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 360));
 
@@ -103,6 +142,6 @@ public class PackageTable extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

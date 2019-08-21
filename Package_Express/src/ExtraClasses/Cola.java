@@ -20,7 +20,7 @@ public class Cola {
     
     private int capacidad;
      Paquete paquete[];
-  int tamaño=0;
+//  int tamaño=0;
   int top = -1;
     int rear = 0;
     
@@ -43,6 +43,13 @@ public class Cola {
         }
     }
     
+      public boolean isFull()
+    {
+        return top==capacidad-1;
+    }
+     public int getDisponibilidad() {
+        return (capacidad-1-top);
+    }
      public Paquete pop(){
         if(top>=0){
             Paquete numero = paquete[0];
@@ -112,11 +119,9 @@ public class Cola {
         this.estado = estado;
     }
 
-    public int getTamaño() {
-        return tamaño;
-    }
+         public int getTamaño(){
+         return top;
+         }    
+          
 
-    public void setTamaño(int tamaño) {
-        this.tamaño = tamaño;
-    }
 }

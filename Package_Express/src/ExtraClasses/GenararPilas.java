@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ExtraClasses;
 import static Inicio.IniciarConeccion.connection;
 import java.sql.PreparedStatement;
@@ -10,16 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.lang.IndexOutOfBoundsException;
+
+
 public class GenararPilas {
 
-    /**
-     *
-     */
     
-    public static LinkedList <ColaRuta> COLARUTA =new LinkedList();
+    public static LinkedList <ColaRuta> COLARUTA;
     
     public GenararPilas(){
-    
+    COLARUTA=new LinkedList();
     }
   
     public void GeneratePilas(){
@@ -28,7 +24,8 @@ public class GenararPilas {
          Ruta=new LinkedList();
          Pc=new LinkedList();
         try {
-        PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.id_ruta FROM ruta ");
+        PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.id_ruta FROM ruta WHERE estado=? ");
+        declaracion.setString(1, "activo");
         ResultSet res=declaracion.executeQuery();
         while(res.next()){
         Ruta.add(res.getInt("id_ruta"));
@@ -93,33 +90,77 @@ public class GenararPilas {
         }
         }  
   
-       RecorrerColas();
+     LlenarPilas();
+
+      
     }
     
       public void RecorrerColas(){
-     
+    
     int a=0;
     for(int i=0; i<COLARUTA.size();i++){
-        if(1==COLARUTA.get(i).getName()){
+        if(2==COLARUTA.get(i).getName()){
         a=i;
         }
     
     }
        LinkedList<Cola> c=COLARUTA.get(a).getA();
-       for(int i=0;i<c.size();i++){
-       System.out.println(c.get(i).getId()+"a");
-       }
+     
+     
        
-       
-       for(int i=0;i<c.size();i++){
-       c.get(i).pop();
-       }
+  try{
+   
+  }catch(IndexOutOfBoundsException e){
+
+  }
        
     
     }
-    
-    
+    public void LlenarPilas(){
 
+        try {
+            PreparedStatement llenar =connection.prepareStatement("SELECT * FROM paquete ");
+            ResultSet res=llenar.executeQuery();
+            while(res.next()){
+            int codP=res.getInt("id_paquete");
+            int peso=res.getInt("peso");
+            int ruta=res.getInt("id_ruta");
+            String stado=res.getString("estado");
+            int precio=res.getInt("precio");
+            String prioridad=res.getString("prioridad");
+            int cui=res.getInt("cui");
+            int PC=res.getInt("id_pc");
+            Paquete tmp=new Paquete(codP,peso,ruta,stado,precio,prioridad,cui,PC);
+          
+    int a=0;
+    for(int i=0; i<COLARUTA.size();i++){
+        if(ruta==COLARUTA.get(i).getName()){
+        a=i;
+        }
     
+    }
+    try{
+          LinkedList<Cola> c=COLARUTA.get(a).getA();
+                for(int i=0; i<c.size();i++){
+                    if(c.get(i).getId()==PC){
+                        c.get(i).push(tmp);
+                    }
+                }
+    }catch(IndexOutOfBoundsException e){
     
+    }
+   
+            }
+            
+        } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+        }
+    
+    }
+
+
+
+ 
+
+   
 }

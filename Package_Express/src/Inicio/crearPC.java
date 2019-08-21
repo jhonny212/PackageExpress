@@ -5,6 +5,7 @@
  */
 package Inicio;
 
+import ExtraClasses.GenararPilas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,7 +53,8 @@ public class crearPC extends javax.swing.JInternalFrame {
 public void llenarCombo(){
    
         try {
-         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta, ruta.id_ruta FROM ruta " );
+         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta, ruta.id_ruta FROM ruta WHERE estado=? " );
+         declaracion.setString(1, "activo" );
          ResultSet re=declaracion.executeQuery();
          while(re.next()){
          combo.addItem(re.getString("direccion_rta")+" "+"ID"+re.getString("id_ruta"));
@@ -140,6 +142,8 @@ public void llenarCombo(){
             if(rs>0){
                 JOptionPane.showMessageDialog(this, "Punto de control creado correctamente");
               validar=false;
+              GenararPilas abrir=new GenararPilas();
+        abrir.GeneratePilas();
                 }
         } catch (SQLException ex) {
         

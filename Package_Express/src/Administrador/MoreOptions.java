@@ -6,6 +6,7 @@
 package Administrador;
 
 import Inicio.crearPC;
+import Reportes.Reports;
 
 /**
  *
@@ -49,6 +50,8 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         jLabel6 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
 
         jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jLabel2.setText("Ruta");
@@ -120,7 +123,7 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, -1, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 490));
-        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 460, 490));
+        jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 450, 490));
 
         jButton5.setBackground(new java.awt.Color(42, 73, 136));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Back.png"))); // NOI18N
@@ -130,6 +133,18 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
             }
         });
         jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 10, 60, 40));
+
+        jButton6.setText("Reportes");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 70, -1, 50));
+
+        jLabel7.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
+        jLabel7.setText("Reportes");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 80, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 490));
 
@@ -167,6 +182,12 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         dispose();
         
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+       Reports a =new Reports();
+       a.show();
+       dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,6 +230,7 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -216,6 +238,7 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
