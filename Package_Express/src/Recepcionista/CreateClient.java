@@ -9,7 +9,7 @@ import static Inicio.IniciarConeccion.connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-
+import java.lang.NumberFormatException;
 /**
  *
  * @author jhonny
@@ -171,7 +171,7 @@ public void crearCliente(){
                 }
         } catch (SQLException ex) {
         
-        }
+        } catch(NumberFormatException s){}
                
        if(validar){
                 JOptionPane.showMessageDialog(this, "Error al agregar cliente");

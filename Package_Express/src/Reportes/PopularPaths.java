@@ -27,10 +27,11 @@ String html;
     public PopularPaths() {
         initComponents();
         list=new LinkedList();
-        llenarTabla();
+        
        
     }
 public  void llenarTabla(){
+    tabla.removeAll();
       html="";
       String matris[][]=new String[3][2];
       PreparedStatement Table; 
@@ -40,8 +41,11 @@ public  void llenarTabla(){
       for(int i=0; i<COLARUTA.size();i++){
           count=0;
       try {
-          
-            Table=connection.prepareStatement("SELECT paquete.estado FROM paquete WHERE id_ruta=?" );
+           String fecha1="'"+Jfecha1()+"'";
+           
+            String fecha2="'"+Jfecha2()+"'";
+            Table=connection.prepareStatement("SELECT paquete.estado FROM paquete WHERE id_ruta=?"
+                 + "&& fecha BETWEEN "+fecha1 +"AND"+fecha2);
             Table.setInt(1,COLARUTA.get(i).getName());
             I=Table.executeQuery();
             while(I.next()){
@@ -105,6 +109,9 @@ public  void llenarTabla(){
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        Fecha1 = new datechooser.beans.DateChooserCombo();
+        Fecha2 = new datechooser.beans.DateChooserCombo();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -136,12 +143,25 @@ public  void llenarTabla(){
             }
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, 60, -1));
+        jPanel1.add(Fecha1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+        jPanel1.add(Fecha2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
+
+        jButton2.setText("OK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 60, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 390));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 public  String llenarHTML(){
+    
+      File file=new File("report.png");
+      String scr=file.getAbsolutePath();
 String HTML="<!DOCTYPE html>\n" +
 "<html lang=\"en\">\n" +
 "<head>\n" +
@@ -152,7 +172,7 @@ String HTML="<!DOCTYPE html>\n" +
 "</head>\n" +
 "<body>\n" +
 "    <header>\n" +
-"        <img  src=\"report.png\" alt=\"img\">\n" +
+"        <img  src=\""+scr+"\" alt=\"img\">\n" +
 "    </header>\n" +
 "     \n" +
         "<ul>\n" +
@@ -221,9 +241,35 @@ return HTML;
         }  
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        llenarTabla();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
+   public String Jfecha1(){
+        String []tmp=Fecha1.getSelection().toString().split("");
+        String tmp2="";
+        for(int i=0; i<tmp.length; i++){
+            if(tmp[i].equals("[") ||tmp[i].equals("]") ){
+            }else{
+            tmp2+=tmp[i];
+            }
+        }
+    return tmp2;}
+      public String Jfecha2(){
+        String []tmp=Fecha2.getSelection().toString().split("");
+        String tmp2="";
+        for(int i=0; i<tmp.length; i++){
+            if(tmp[i].equals("[") ||tmp[i].equals("]") ){
+            }else{
+            tmp2+=tmp[i];
+            }
+        }
+    return tmp2;}
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo Fecha1;
+    private datechooser.beans.DateChooserCombo Fecha2;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

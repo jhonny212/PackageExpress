@@ -6,11 +6,12 @@
 package Administrador;
 
 import Inicio.IniciarConeccion;
+import static Inicio.IniciarConeccion.connection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -24,8 +25,57 @@ public class precioEnvio extends javax.swing.JInternalFrame {
      */
     public precioEnvio() {
         initComponents();
+        llenarCombo();
     }
 
+   public void llenarCombo(){
+combo.removeAllItems();
+        try {
+         PreparedStatement declaracion =connection.prepareStatement("SELECT ruta.direccion_rta, ruta.id_ruta FROM ruta WHERE estado=?" );
+         declaracion.setString(1, "activo");
+         ResultSet re=declaracion.executeQuery();
+         while(re.next()){
+         combo.addItem(re.getString("direccion_rta")+" "+"ID:"+re.getString("id_ruta"));
+         }
+         
+         
+        } catch (SQLException ex) {
+        
+        }
+
+}
+   public int obtenerLetra(){
+       String letra="";
+     try{
+     
+     
+           
+        
+     String tmp=combo.getSelectedItem().toString();
+     String [] vect=tmp.split("");
+     String numbers="1234567890";
+     String [] vect2=numbers.split("");
+     
+     for(int i=0; i<tmp.length();i++){
+       
+     for(int j=0;j<numbers.length();j++){
+         
+     if(vect[i].equals(vect2[j]))
+     {
+        letra+=vect[i]; 
+     
+     break;
+     }
+     }
+     }
+    }catch(NullPointerException e){
+     
+     }
+        
+        
+        int a=Integer.parseInt(letra);
+    return a;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +88,7 @@ public class precioEnvio extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         precio = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        combo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
@@ -53,7 +104,7 @@ public class precioEnvio extends javax.swing.JInternalFrame {
                 precioKeyTyped(evt);
             }
         });
-        getContentPane().add(precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 130, -1));
+        getContentPane().add(precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, 130, -1));
 
         jButton1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(152, 136, 136));
@@ -63,7 +114,10 @@ public class precioEnvio extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 170, 80, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 100, -1));
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 120, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Envio.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
@@ -94,15 +148,16 @@ public class precioEnvio extends javax.swing.JInternalFrame {
                 IniciarConeccion a=new IniciarConeccion();
                 Connection connection=null;
                 connection=a.getConnection();
-                declaracion=connection.prepareStatement("UPDATE datos SET precioEnvio=?");
+                declaracion=connection.prepareStatement("UPDATE ruta SET precio_rta=? WHERE id_ruta=?");
                 declaracion.setInt(1, Integer.parseInt(precio.getText()));
+                declaracion.setInt(2, obtenerLetra());
                  int  rs=declaracion.executeUpdate();
             if(rs>0){
                 JOptionPane.showMessageDialog(this, "Dato actualizado correctamente");
               validar=false;
                 }
             } catch (SQLException ex) {
-            
+            System.out.println(ex.getMessage());
             }
             
         
@@ -118,6 +173,7 @@ public class precioEnvio extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> combo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

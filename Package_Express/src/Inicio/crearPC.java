@@ -133,7 +133,7 @@ public void llenarCombo(){
          IniciarConeccion a=new IniciarConeccion();
          Connection connection=null;
          connection=a.getConnection();
-             declaracion=connection.prepareStatement("INSERT INTO controlPoint(precioPc, direccion_rta,estadoPc, tamaño) VALUES (?, ?, ?, ?)");
+            declaracion=connection.prepareStatement("INSERT INTO controlPoint(precioPc, direccion_rta,estadoPc, tamaño) VALUES (?, ?, ?, ?)");
             declaracion.setInt(1, Integer.parseInt(precio.getText()));
             declaracion.setString(2,tmp );
             declaracion.setString(3, "Activo");

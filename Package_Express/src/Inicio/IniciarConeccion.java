@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class IniciarConeccion {
     public static Connection connection ;
-    public int a;
+   
    
     public static void IniciarConeccion(){
     	String user = "root";

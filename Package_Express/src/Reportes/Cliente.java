@@ -121,6 +121,9 @@ combo.addItem("Todos");
         
     }//GEN-LAST:event_jButton1ActionPerformed
 public  String llenarHTML(){
+    
+      File file=new File("report.png");
+      String scr=file.getAbsolutePath();
 String HTML="<!DOCTYPE html>\n" +
 "<html lang=\"en\">\n" +
 "<head>\n" +
@@ -131,7 +134,7 @@ String HTML="<!DOCTYPE html>\n" +
 "</head>\n" +
 "<body>\n" +
 "    <header>\n" +
-"        <img  src=\"report.png\" alt=\"img\">\n" +
+"        <img  src=\""+scr+"\" alt=\"img\">\n" +
 "    </header>\n" +
 "     \n" +
         "<ul>\n" +

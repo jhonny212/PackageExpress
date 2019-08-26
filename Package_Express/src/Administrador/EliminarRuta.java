@@ -6,16 +6,13 @@
 package Administrador;
 
 import ExtraClasses.GenararPilas;
-import Inicio.IniciarConeccion;
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import static Inicio.IniciarConeccion.connection;
-import java.lang.NullPointerException;
-import java.lang.NumberFormatException;
+
 import javax.swing.JOptionPane;
 
 /**

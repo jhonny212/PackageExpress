@@ -14,9 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFileChooser;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -38,6 +36,9 @@ public class Rutas extends javax.swing.JInternalFrame {
        
     }
 public final void llenarHTML(){
+      
+      File file=new File("report.png");
+      String scr=file.getAbsolutePath();
 this.HTML="<!DOCTYPE html>\n" +
 "<html lang=\"en\">\n" +
 "<head>\n" +
@@ -48,7 +49,7 @@ this.HTML="<!DOCTYPE html>\n" +
 "</head>\n" +
 "<body>\n" +
 "    <header>\n" +
-"        <img  src=\"report.png\" alt=\"img\">\n" +
+"        <img  src=\""+scr+"\" alt=\"img\">\n" +
 "    </header>\n" +
 "     \n" +
         "<ul>\n" +
@@ -112,7 +113,6 @@ this.HTML="<!DOCTYPE html>\n" +
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        txtNombre = new javax.swing.JLabel();
 
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -152,9 +152,6 @@ this.HTML="<!DOCTYPE html>\n" +
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, -1));
-
-        txtNombre.setText("jLabel1");
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 390, 280));
 
@@ -212,7 +209,6 @@ this.HTML="<!DOCTYPE html>\n" +
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;
-    private javax.swing.JLabel txtNombre;
     // End of variables declaration//GEN-END:variables
 
     private void OrganizarDatos(LinkedList<Integer> ID) {

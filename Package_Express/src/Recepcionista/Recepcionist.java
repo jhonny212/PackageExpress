@@ -9,15 +9,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.lang.IndexOutOfBoundsException;
-import java.lang.NullPointerException;
-import java.lang.NumberFormatException;
 import ExtraClasses.GenararPilas;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Date;
+
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 public class Recepcionist extends javax.swing.JFrame {
+    DefaultTableModel model;
+     
+    Object[] o=new Object[3];
     public LinkedList <Paquete> Package=null;
     public int costo;
     public Recepcionist() {
@@ -25,6 +26,7 @@ public class Recepcionist extends javax.swing.JFrame {
         this.setLocationRelativeTo(this);
         Package=new LinkedList();
         llenarCombo();
+        model=(DefaultTableModel)tabla.getModel();
         this.costo=0;
      
     }
@@ -74,7 +76,9 @@ public class Recepcionist extends javax.swing.JFrame {
         combo = new javax.swing.JComboBox<>();
         add = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
+        Total = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -226,7 +230,7 @@ public class Recepcionist extends javax.swing.JFrame {
                 sendActionPerformed(evt);
             }
         });
-        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 500, -1, -1));
+        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 510, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jLabel6.setText("CUI");
@@ -255,20 +259,23 @@ public class Recepcionist extends javax.swing.JFrame {
         });
         jPanel1.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Paquete", "Peso", "Destino"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 340, 220));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 370, 170));
+
+        Total.setText("0");
+        jPanel1.add(Total, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 450, 50, 30));
+
+        jLabel2.setText("Total");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 448, -1, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 560));
 
@@ -403,7 +410,15 @@ JOptionPane.showMessageDialog(this,"Este cliente no existe");
     private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
         generarFactura();
         cui.enable();
-            
+        peso.setText("");
+        cui.setText("");
+        Total.setText("");
+        int a=tabla.getRowCount()-1;
+        for(int i=a; i>=0;i--){
+        
+        }
+        model.setRowCount(0);
+       
     }//GEN-LAST:event_sendActionPerformed
 public PreparedStatement declaracion=null;
     
@@ -440,7 +455,7 @@ public void crearPaquete(){
     
     try {
           PreparedStatement declaracion =connection.prepareStatement("INSERT INTO paquete(peso, id_ruta, estado, precio,prioridad"
-          + ",cui, id_pc) VALUES (?, ?, ?, ?,?,?,?)");
+          + ",cui, id_pc,fecha) VALUES (?, ?, ?, ?,?,?,?,?)");
         
            
           declaracion.setInt(1,Integer.parseInt(peso.getText()));
@@ -451,8 +466,15 @@ public void crearPaquete(){
           declaracion.setString(5, kind.getSelectedItem().toString());
           declaracion.setInt(6, Integer.parseInt(cui.getText()));
           declaracion.setInt(7, 0);
+           java.util.Date fecha = new java.util.Date();
+            Date d;
+            d = new Date(fecha.getYear(),fecha.getMonth(),fecha.getDay());
+            declaracion.setDate(8,d);
           declaracion.executeUpdate();
-            
+            o[0]=kind.getSelectedItem().toString();
+            o[1]=peso.getText();
+            o[2]=combo.getSelectedItem().toString();
+            model.addRow(o);
           GenerarGanancia();
         } catch (SQLException ex   ) {
        System.out.println(ex.getMessage());
@@ -488,21 +510,27 @@ public void GenerarGanancia(){
                 this.costo=res.getInt("precio_rta");
             }
             
-            PreparedStatement G =connection.prepareStatement("SELECT * FROM datos ");
+            PreparedStatement G =connection.prepareStatement("SELECT datos.precioLibra FROM datos ");
             precio.setInt(1, Integer.parseInt(obtenerLetra()) );
             ResultSet Gs=G.executeQuery();
             while(Gs.next()){
-                this.costo+=((Integer.parseInt(peso.getText()))*(Gs.getInt("precioLibra"))+Gs.getInt("precioEnvio"));
+                this.costo+=((Integer.parseInt(peso.getText()))*(Gs.getInt("precioLibra")));
             }
             
             
-            PreparedStatement ganancia =connection.prepareStatement("INSERT INTO ganancia(id_ruta,id_paquete, cui, ganancia) VALUES (?,?,?,?)");
+            PreparedStatement ganancia =connection.prepareStatement("INSERT INTO ganancia(id_ruta,id_paquete, cui, ganancia, fecha) VALUES (?,?,?,?,?)");
             
             ganancia.setInt(1, Integer.parseInt(obtenerLetra()) );
             ganancia.setInt(2, cod);
             ganancia.setInt(3, Integer.parseInt(cui.getText()));
             ganancia.setInt(4,this.costo );
+             java.util.Date fecha = new java.util.Date();
+            Date d;
+            d = new Date(fecha.getYear(),fecha.getMonth(),fecha.getDay());
+            ganancia.setDate(5,d);
             ganancia.executeUpdate();
+            int total=Integer.parseInt(Total.getText())+costo;
+        Total.setText(Integer.toString(total));
         } catch (SQLException ex) {
         JOptionPane.showMessageDialog(this, ex.getMessage());
         }
@@ -573,6 +601,7 @@ public void GenerarGanancia(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Total;
     private javax.swing.JButton add;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField cui;
@@ -581,6 +610,7 @@ public void GenerarGanancia(){
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -591,10 +621,10 @@ public void GenerarGanancia(){
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> kind;
     private javax.swing.JTextField peso;
     private javax.swing.JButton send;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 
     public void ActualizarBase(LinkedList<Cola> c) {

@@ -10,30 +10,52 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static ExtraClasses.GenararPilas.COLARUTA;
+import datechooser.model.multiple.Period;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author jhonny
- */
 public class Ganancias extends javax.swing.JInternalFrame {
 
 public int Ingreso;
 public int Costo=0;
 String html;
 public int ganancia=0;
+
     public Ganancias() {
         initComponents();
-        llenarCombo();
+       llenarCombo();
         this.setLocation(50,50);
         this.Ingreso=0;
         this.Costo=0;
         this.ganancia=0;
+ 
+      
     }
+    public String Jfecha1(){
+        String []tmp=Fecha1.getSelection().toString().split("");
+        String tmp2="";
+        for(int i=0; i<tmp.length; i++){
+            if(tmp[i].equals("[") ||tmp[i].equals("]") ){
+            }else{
+            tmp2+=tmp[i];
+            }
+        }
+    return tmp2;}
+      public String Jfecha2(){
+        String []tmp=Fecha2.getSelection().toString().split("");
+        String tmp2="";
+        for(int i=0; i<tmp.length; i++){
+            if(tmp[i].equals("[") ||tmp[i].equals("]") ){
+            }else{
+            tmp2+=tmp[i];
+            }
+        }
+    return tmp2;}
 public void llenarCombo(){
 combo.removeAllItems();
 combo.addItem("Todos");
@@ -87,12 +109,16 @@ public String obtenerLetra(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
+        dateChooserDialog2 = new datechooser.beans.DateChooserDialog();
         jPanel1 = new javax.swing.JPanel();
         combo = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
+        Fecha1 = new datechooser.beans.DateChooserCombo();
+        Fecha2 = new datechooser.beans.DateChooserCombo();
 
         setClosable(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -101,7 +127,7 @@ public String obtenerLetra(){
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 120, 30));
+        jPanel1.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 120, 30));
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -109,7 +135,7 @@ public String obtenerLetra(){
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 40, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 320, 50, -1));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -121,7 +147,7 @@ public String obtenerLetra(){
         ));
         jScrollPane1.setViewportView(tabla);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 430, 240));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 430, 240));
 
         jButton2.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jButton2.setText("Exportar HTML");
@@ -131,6 +157,8 @@ public String obtenerLetra(){
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 320, 110, -1));
+        jPanel1.add(Fecha1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 110, -1));
+        jPanel1.add(Fecha2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, 130, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 360));
 
@@ -148,6 +176,10 @@ public String obtenerLetra(){
       }
     }//GEN-LAST:event_jButton1ActionPerformed
 public  String llenarHTML(){
+    
+      
+      File file=new File("report.png");
+      String scr=file.getAbsolutePath();
 String HTML="<!DOCTYPE html>\n" +
 "<html lang=\"en\">\n" +
 "<head>\n" +
@@ -158,7 +190,7 @@ String HTML="<!DOCTYPE html>\n" +
 "</head>\n" +
 "<body>\n" +
 "    <header>\n" +
-"        <img  src=\"report.png\" alt=\"img\">\n" +
+"        <img  src=\""+scr+"\" alt=\"img\">\n" +
 "    </header>\n" +
 "     \n" +
         "<ul>\n" +
@@ -171,7 +203,7 @@ String HTML="<!DOCTYPE html>\n" +
 "                        <th><h2>INGRESO</h2></th> \n" +
 "                        <th><h2>GANANCIA</h2></th> \n" + 
        
-"               </tr >\n" +html+
+"               </tr >\n" +//html+
 "            </table>\n" +
 "            </div>\n" +
 "</ul>\n" +
@@ -236,14 +268,22 @@ public void LlenarTabla1(){
     ganancia=0;
         try {
             PreparedStatement Table;
-            Table=connection.prepareStatement("SELECT ganancia.ganancia FROM ganancia WHERE id_ruta=?" );
+           String fecha1="'"+Jfecha1()+"'";
+           
+            String fecha2="'"+Jfecha2()+"'";
+            
+            System.out.println(fecha1+" "+fecha2);
+            Table=connection.prepareStatement("SELECT ganancia.ganancia FROM ganancia WHERE id_ruta=?"
+                    + "&& fecha BETWEEN "+fecha1 +"AND"+fecha2);
             Table.setInt(1,Integer.parseInt(obtenerLetra()));
+            
             ResultSet I;
             I=Table.executeQuery();
             while(I.next()){
             this.Ingreso+=I.getInt("ganancia");
             }
-            Table=connection.prepareStatement("SELECT paquete.precio FROM paquete WHERE id_ruta=? && (estado=? || estado=?)" );
+            Table=connection.prepareStatement("SELECT paquete.precio FROM paquete WHERE id_ruta=? && (estado=? || estado=?)"
+                    + "&& fecha BETWEEN "+fecha1+"AND"+fecha2 );
             Table.setInt(1,Integer.parseInt(obtenerLetra()));
             Table.setString(2, "entregado");
             Table.setString(3,"destino");
@@ -253,7 +293,7 @@ public void LlenarTabla1(){
             }
             System.out.println(Costo+" "+ganancia);
             this.ganancia=Ingreso-Costo;
-            String matris[][]=new String[1][4];
+            String matris[][]=new String[1][5];
             matris[0][0]=obtenerLetra();
             matris[0][1]=Integer.toString(Costo);
             matris[0][2]=Integer.toString(Ingreso);
@@ -274,16 +314,19 @@ public void LlenarTabla1(){
         ));
      tabla.disable();
         } catch (SQLException ex) {
-        
+        System.out.println(ex.getMessage());
         }
          
     
 }
 public void LlenarTabla2(){
-    String matris[][]=new String[COLARUTA.size()][4];
+    String matris[][]=new String[COLARUTA.size()+1][4];
      Costo=0;
     Ingreso=0;
     ganancia=0;
+    int Ganancia_total=0;
+    int Ingreso_total=0;
+    int Costo_total=0;
     html="";
     PreparedStatement Table;
      ResultSet I;
@@ -292,42 +335,71 @@ public void LlenarTabla2(){
     Ingreso=0;
     ganancia=0;
         try {
-           
-            Table=connection.prepareStatement("SELECT ganancia.ganancia FROM ganancia WHERE id_ruta=?" );
+            
+   
+            String fecha1="'"+Jfecha1()+"'";
+            String fecha2="'"+Jfecha2()+"'";
+            Table=connection.prepareStatement("SELECT ganancia.ganancia FROM ganancia WHERE id_ruta=?"
+                    + "&& fecha BETWEEN "+fecha1+"AND"+fecha2 );
+            
             Table.setInt(1,COLARUTA.get(i).getName());
            
             I=Table.executeQuery();
             while(I.next()){
             this.Ingreso+=I.getInt("ganancia");
+           
             }
-            Table=connection.prepareStatement("SELECT paquete.precio FROM paquete WHERE id_ruta=?" );
+            Table=connection.prepareStatement("SELECT paquete.precio FROM paquete WHERE id_ruta=? && (estado=? || estado=?)"
+                    + "&& fecha BETWEEN "+fecha1+"AND"+fecha2  );
             Table.setInt(1,COLARUTA.get(i).getName());
+            Table.setString(2, "entregado");
+            Table.setString(3,"destino");
+            
             I=Table.executeQuery();
             while(I.next()){
             this.Costo+=I.getInt("precio");
+            
             }
             System.out.println(Costo+" "+ganancia);
             this.ganancia=Ingreso-Costo;
-            
+             Ganancia_total+=ganancia;
+             Ingreso_total+=Ingreso;
+             Costo_total+=Costo;
             matris[i][0]=Integer.toString(COLARUTA.get(i).getName());
             matris[i][1]=Integer.toString(Costo);
             matris[i][2]=Integer.toString(Ingreso);
             matris[i][3]=Integer.toString(ganancia);
-              html+="<tr>"
+          
+        
+    
+        } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+        }
+   }
+    matris[COLARUTA.size()][0]="";
+       matris[COLARUTA.size()][1]=Integer.toString(Costo_total);
+       matris[COLARUTA.size()][2]=Integer.toString(Ingreso_total);
+       matris[COLARUTA.size()][3]=Integer.toString(Ganancia_total);
+       
+   for(int i=0; i<matris.length;i++){
+       html+="<tr>"
             + "<td>"+matris[i][0]+" </td> "
             + "<td>"+matris[i][1]+" </td> "
             + "<td>"+matris[i][2]+" </td> "
             + "<td>"+matris[i][3]+" </td> "
-           
+          
+               
                        + "</tr>";
-        
-    
-        } catch (SQLException ex) {
-        
-        }
-   }
        
-            tabla.setModel(new javax.swing.table.DefaultTableModel(
+   }    
+       html+="<tr>"
+               + "<td>"+matris[COLARUTA.size()][0]+"/td>"
+               + "<td>"+matris[COLARUTA.size()][1]+"/td>"
+               + "<td>"+matris[COLARUTA.size()][2]+"/td>"
+               + "<td>"+matris[COLARUTA.size()][3]+"/td>"
+                +"</tr>";          
+     
+       tabla.setModel(new javax.swing.table.DefaultTableModel(
           matris,
           new String [] {
                 "ID Ruta", "Costo", "Ingresos", "Ganancia"
@@ -339,7 +411,11 @@ public void LlenarTabla2(){
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo Fecha1;
+    private datechooser.beans.DateChooserCombo Fecha2;
     private javax.swing.JComboBox<String> combo;
+    private datechooser.beans.DateChooserDialog dateChooserDialog1;
+    private datechooser.beans.DateChooserDialog dateChooserDialog2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;

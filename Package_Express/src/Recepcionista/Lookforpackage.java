@@ -9,8 +9,8 @@ import static Inicio.IniciarConeccion.connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import java.lang.NullPointerException;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +26,7 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
         initComponents();
         this.setLocation(50, 50);
         text.setText("Waiting...");
+        Pcod.removeAllItems();
     }
 
     /**
@@ -40,9 +41,10 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        codigo = new javax.swing.JTextField();
+        cui = new javax.swing.JTextField();
         text = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        Pcod = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 42, 31));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -61,73 +63,100 @@ public class Lookforpackage extends javax.swing.JInternalFrame {
 
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 380, 60));
 
-        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+        cui.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                codigoKeyTyped(evt);
+                cuiKeyTyped(evt);
             }
         });
-        jPanel2.add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 130, -1));
+        jPanel2.add(cui, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 130, -1));
 
         text.setFont(new java.awt.Font("Ubuntu Mono", 1, 16)); // NOI18N
         text.setText("               WAITING...");
-        jPanel2.add(text, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 390, 50));
+        jPanel2.add(text, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 390, 50));
 
-        jButton1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
-        jButton1.setText("Verificar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Pcod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Pcod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                PcodActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 160, 110, 40));
+        jPanel2.add(Pcod, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 130, -1));
+
+        jButton2.setText("OK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 80, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 public  int tmp;
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-   boolean validar=true;
-        try {
-            PreparedStatement declaracion =connection.prepareStatement("SELECT paquete.id_pc FROM paquete WHERE id_paquete=?");
-            declaracion.setInt(1, Integer.parseInt(codigo.getText()));
-            tmp=0;
-            ResultSet res=declaracion.executeQuery();
-            while(res.next()){
-            tmp=res.getInt("id_pc");
-            validar=false;
-            }
-            if(tmp==0){
-            text.setText("El paquete esta en la bodega ");
-            }else if(tmp==-1){
-            text.setText("El paquete esta en el destino ");
-            }else if(!(tmp==0 && tmp==-1)){
-            text.setText("El paquete esta en el punto de control "+tmp);
-            }
-            
-            
-        } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
-        }
-    if(validar){
-        JOptionPane.showMessageDialog(this, "Codigo de paquete no valido");
-    }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyTyped
+    private void cuiKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cuiKeyTyped
                 char validar=evt.getKeyChar();
           if(Character.isLetter(validar)  ){   
         getToolkit().beep();
         evt.consume();
         }
 
-    }//GEN-LAST:event_codigoKeyTyped
+    }//GEN-LAST:event_cuiKeyTyped
 
+    private void PcodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PcodActionPerformed
+    
+        try {
+            PreparedStatement declaracion =connection.prepareStatement("SELECT paquete.id_pc FROM paquete WHERE id_paquete=?");
+            declaracion.setInt(1, Integer.parseInt(Pcod.getSelectedItem().toString()));
+            tmp=0;
+            ResultSet res=declaracion.executeQuery();
+            while(res.next()){
+            tmp=res.getInt("id_pc");
+          
+            }
+            boolean VD=true;
+            if(tmp==0){
+            text.setText("El paquete esta en la bodega ");
+            VD=false;
+            }else if(tmp==-1){
+            text.setText("El paquete esta en el destino ");
+            VD=false;
+            }else if(VD){
+            text.setText("El paquete esta en el punto de control "+tmp);
+            }
+            
+            
+        } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+        } catch(NullPointerException exs){
+        
+        }
+   
+
+    }//GEN-LAST:event_PcodActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Pcod.removeAllItems();
+        try {
+         PreparedStatement declaracion =connection.prepareStatement("SELECT paquete.id_paquete FROM paquete WHERE  cui=?" );
+         declaracion.setInt(1, Integer.parseInt(cui.getText()));
+         ResultSet re=declaracion.executeQuery();
+         while(re.next()){
+         Pcod.addItem(Integer.toString(re.getInt("id_paquete")));
+         }
+         
+         
+        } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Cliente no valido");
+        System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField codigo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> Pcod;
+    private javax.swing.JTextField cui;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

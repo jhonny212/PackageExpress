@@ -42,7 +42,7 @@ public class Reports extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         reports.setBackground(new java.awt.Color(205, 190, 175));
-        getContentPane().add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 1, 550, 420));
+        getContentPane().add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 1, 610, 420));
 
         jPanel1.setBackground(java.awt.Color.white);
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -81,14 +81,15 @@ public class Reports extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, -1, -1));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 70, -1));
 
         jLabel1.setFont(new java.awt.Font("Uroob", 1, 18)); // NOI18N
         jLabel1.setText("(populares)");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 70, -1));
 
-        jButton5.setText("jButton5");
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, -1, -1));
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Back.png"))); // NOI18N
+        jButton5.setContentAreaFilled(false);
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 70, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 420));
 

@@ -48,10 +48,11 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         jButton4 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
 
         jLabel2.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jLabel2.setText("Ruta");
@@ -122,6 +123,14 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         jLabel6.setText("cola");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, -1, -1));
 
+        jButton8.setText("Precio PC");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 90, 50));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 490));
         jPanel1.add(jDesktopPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 450, 490));
 
@@ -142,9 +151,13 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
         });
         jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 70, -1, 50));
 
-        jLabel7.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
-        jLabel7.setText("Reportes");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 130, 80, -1));
+        jButton7.setText("Tarifa");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 170, 70, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 490));
 
@@ -189,6 +202,18 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
        dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       TarifaGlobal a=new TarifaGlobal();
+       jDesktopPane1.add(a);
+       a.show();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        AsiganarPrecio a=new AsiganarPrecio();
+       jDesktopPane1.add(a);
+       a.show();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -231,6 +256,8 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -238,7 +265,6 @@ jButton1.setBackground(new java.awt.Color(253, 167, 64));
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

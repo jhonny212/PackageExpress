@@ -18,8 +18,7 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import ExtraClasses.Bodega;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.NullPointerException;
 import javax.swing.JOptionPane;
 
 public class operator extends javax.swing.JFrame {
@@ -32,13 +31,59 @@ public class operator extends javax.swing.JFrame {
         Control.disable();
         
         check.disable();
-      ActualizarCombo();
-    
+        IDRUTA.removeAllItems();
+      ComboRuta();
     Image();
 
 
     
       
+    }
+      public int obtenerLetra(){
+          String letra="0";
+     try{
+     
+     
+     String tmp=IDRUTA.getSelectedItem().toString();
+     String [] vect=tmp.split("");
+     String numbers="1234567890";
+     String [] vect2=numbers.split("");
+     
+     for(int i=0; i<tmp.length();i++){
+       
+     for(int j=0;j<numbers.length();j++){
+         
+     if(vect[i].equals(vect2[j]))
+     {
+        letra+=vect[i]; 
+     
+     break;
+     }
+     }
+     }
+    
+        
+       }catch(NullPointerException e){
+     
+     } 
+        
+    int a=Integer.parseInt(letra);
+    return a;}
+    public void ComboRuta(){
+       try {
+          PreparedStatement declaracion =connection.prepareStatement("SELECT direccion_rta,ruta.id_ruta FROM ruta WHERE estado=? ");
+          declaracion.setString(1, "activo");
+        
+           ResultSet res=declaracion.executeQuery();
+             while(res.next()){
+    this.IDRUTA.addItem(res.getString("direccion_rta")+": "+res.getString("id_ruta"));
+    }
+          
+      } catch (SQLException ex) {
+      
+      }
+     
+  
     }
     public void Image(){
         int tamaño=5;
@@ -60,15 +105,16 @@ public class operator extends javax.swing.JFrame {
     public void ActualizarCombo(){
     PC.removeAllItems();
       try {
-          PreparedStatement declaracion =connection.prepareStatement("SELECT controlPoint.id_pc, controlPoint.estadoPc FROM controlPoint WHERE estadoPc=?");
+          PreparedStatement declaracion =connection.prepareStatement("SELECT controlPoint.id_pc, controlPoint.estadoPc FROM controlPoint WHERE estadoPc=? && direccion_rta=?");
           declaracion.setString(1, USER);
+           declaracion.setInt(2, obtenerLetra());
            ResultSet res=declaracion.executeQuery();
              while(res.next()){
     this.PC.addItem(res.getString("id_pc"));
     }
           
       } catch (SQLException ex) {
-      
+      System.out.println(ex.getMessage());
       }
      
   
@@ -96,6 +142,7 @@ public class operator extends javax.swing.JFrame {
         check = new javax.swing.JButton();
         varId = new javax.swing.JLabel();
         seleccionar = new javax.swing.JButton();
+        IDRUTA = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -152,7 +199,12 @@ public class operator extends javax.swing.JFrame {
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 17, 120, 30));
 
         PC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(PC, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 90, -1));
+        PC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PCActionPerformed(evt);
+            }
+        });
+        jPanel1.add(PC, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, 90, -1));
 
         jLabel1.setFont(new java.awt.Font("Ubuntu Mono", 1, 18)); // NOI18N
         jLabel1.setForeground(java.awt.Color.white);
@@ -210,7 +262,15 @@ public class operator extends javax.swing.JFrame {
                 seleccionarActionPerformed(evt);
             }
         });
-        jPanel1.add(seleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, -1, -1));
+        jPanel1.add(seleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, -1, -1));
+
+        IDRUTA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        IDRUTA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IDRUTAActionPerformed(evt);
+            }
+        });
+        jPanel1.add(IDRUTA, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 100, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 2, 550, 470));
 
@@ -232,10 +292,11 @@ public int id_pc;
 public int ruta;
     private void seleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarActionPerformed
          
-        
-          this.id_pc=Integer.parseInt(PC.getSelectedItem().toString());
+       
+         
           
         try {
+             this.id_pc=Integer.parseInt(PC.getSelectedItem().toString());
           PreparedStatement declaracion =connection.prepareStatement("SELECT controlPoint.direccion_rta FROM controlPoint WHERE id_pc=?");
           declaracion.setInt(1, id_pc);
           ResultSet res=declaracion.executeQuery();
@@ -246,6 +307,7 @@ public int ruta;
           ObetenerCola();
       } catch (SQLException ex) {
          
+      }catch(NullPointerException e){
       }
         
     }//GEN-LAST:event_seleccionarActionPerformed
@@ -255,7 +317,8 @@ public int ruta;
       
           
           if(!this.Colasiguiente.isFull()){
-          
+                         varId.setText("");
+     varId.setText("#Paquete "+Integer.toString(ColaPaquete.getTamaño()+1));
            if(ColaPaquete.getTamaño()!=-1){
           try {
              Paquete tmp=null ;
@@ -270,6 +333,9 @@ public int ruta;
               declaracion.executeUpdate();
               Bodega open = new Bodega();
               open.ActualizarBodega();
+              
+     
+
           } catch (SQLException ex) {
           System.out.println(ex.getMessage());
           }
@@ -296,7 +362,7 @@ public int ruta;
               declaracion.setInt(4, tmp.getId_paquete());
               declaracion.executeUpdate();
           } catch (SQLException ex) {
-          
+          System.out.println(ex.getMessage());
           }
            }else{
                JOptionPane.showMessageDialog(this, "No hay paquetes en cola");
@@ -315,6 +381,15 @@ public int ruta;
       }
         
     }//GEN-LAST:event_timeKeyTyped
+
+    private void IDRUTAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDRUTAActionPerformed
+     ActualizarCombo();
+     
+    }//GEN-LAST:event_IDRUTAActionPerformed
+
+    private void PCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PCActionPerformed
+        
+    }//GEN-LAST:event_PCActionPerformed
 public Cola ColaPaquete;
 public Cola Colasiguiente;
 boolean validar;
@@ -348,7 +423,7 @@ paint();
  }
 
  public void paint(){
-     System.out.print(ColaPaquete.getTamaño());
+    
   if(ColaPaquete.getTamaño()!=-1){
      varId.setText("#Paquete "+Integer.toString(ColaPaquete.getTamaño()+1));
         Control.enable();
@@ -400,6 +475,7 @@ paint();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Cola;
     private javax.swing.JPanel Control;
+    private javax.swing.JComboBox<String> IDRUTA;
     private javax.swing.JComboBox<String> PC;
     private javax.swing.JButton check;
     private javax.swing.JButton jButton1;
